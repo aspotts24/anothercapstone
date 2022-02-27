@@ -47,6 +47,7 @@ def sign_up():
         first_name = request.form.get('firstName')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
+        user_phone = '555-555-555'
         # check if inputs are valid 
         user = User.query.filter_by(email=email).first()
         if user:
@@ -61,7 +62,7 @@ def sign_up():
             flash('Password must be at least 7 characters.', category='error')
         else:
             # create new user
-            new_user = User(email=email, first_name=first_name, password=generate_password_hash(
+            new_user = User(email=email, first_name=first_name, phone = user_phone, password=generate_password_hash(
                 password1, method='sha256'))
             db.session.add(new_user)
             db.session.commit()
