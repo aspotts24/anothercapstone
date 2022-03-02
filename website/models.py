@@ -33,3 +33,10 @@ class Cart(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
     price = db.Column(db.Integer)
+    option1Name = db.Column(db.String(150))
+    option2Name = db.Column(db.String(150))
+    option1price = db.Column(db.Integer)
+    option2price = db.Column(db.Integer)
+    
+   
+  
