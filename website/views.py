@@ -66,6 +66,43 @@ def successful():
   rows = Cart.query.filter(Cart.id).count()
   return render_template('successful.html', user=current_user, rows=rows)
 
+@views.route('/admin', methods=['POST', 'GET'])
+def admin():
+  if request.method == 'POST':
+    name = request.form.get('name')
+    price = request.form.get('price')
+    description = request.form.get('description')
+    add_item = Items(name=name, price=price, description=description)
+    db.session.add(add_item)
+    db.session.commit()
+    flash('Added to Menu', category='success')
+    return redirect(url_for('views.admin'))
+  user_id = current_user.id
+  if user_id != 1:
+    return redirect(url_for('views.home'))
+  else:
+    rows = Cart.query.filter(Cart.id).count()
+    return render_template('admin.html', user=current_user, items=get_items(), rows=rows)
+
+@views.route('/remove_menu_item/<int:id>')
+def remove_menu_item(id):
+  item_to_delete = Items.query.get_or_404(id)
+  try:
+    db.session.delete(item_to_delete)
+    db.session.commit()
+    ids = [id[0] for id in Items.query.with_entities(Items.id).all()] # fixed
+    new_id = 1
+    for i in ids:
+      _id = Items.query.get(i)
+      _id.id = new_id
+      new_id += 1
+      db.session.commit()
+    flash('Item removed from menu')
+    return redirect(url_for('views.admin'))
+  except:
+    flash('Problem removing item from cart')
+    return redirect(url_for('views.admin'))
+
 def get_items():
   ids = [id[0] for id in Items.query.with_entities(Items.id).all()] # fixed
   test_items = []
