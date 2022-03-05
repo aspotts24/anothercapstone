@@ -6,7 +6,6 @@ from sqlalchemy import PrimaryKeyConstraint
 from . import db
 from flask_login import UserMixin
 
-
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True)
@@ -39,7 +38,7 @@ class Cart(db.Model):
     option1price = db.Column(db.Integer)
     option2price = db.Column(db.Integer)
     
-   class Cartb(db.Model):
+class Cartb(db.Model):
         cartID = db.Column(db.Integer, primary_key=True)
         itemID = db.Column(db.Integer)
         price = db.Column(db.Integer)
@@ -47,13 +46,13 @@ class Cart(db.Model):
         option1present = db.Column(db.Integer)
         option2present = db.Column(db.Integer)
     
-    class option(db.Model):
+class option(db.Model):
         optionID = db.Column(db.Integer)
         name = db.Column(db.String(150))
         description = db.Column(db.String(500))
         price = db.Column(db.Integer)
         
- class Itemsb(db.Model):
+class Itemsb(db.Model):
     itemID = db.Column(db.Integer, primary_key=True)
     price = db.Column(db.Integer)
     name = db.Column(db.String(150))
