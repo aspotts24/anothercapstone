@@ -120,12 +120,22 @@ def get_items():
 def get_cart_items():
   ids = [id[0] for id in Cart.query.with_entities(Cart.id).all()]
   test_cart_items = []
+  names = []
   for id in ids:
     cart = Cart.query.filter_by(id=id).first()
-    grabber = {'id': 0, 'name': '', 'price': 0}
+    grabber = {'id': 0, 'name': '', 'price': 0, 'quantity': 0}
     grabber['id'] = id
-    grabber['name'] = cart.name
     grabber['price'] = cart.price
+    grabber['quantity'] = cart.quantity
+    grabber['name'] = cart.name
+    for _name in names:
+      if _name == cart.name:
+        grabber['quantity'] += 1
+        for _item in range(len(test_cart_items)):
+          if test_cart_items[_item]['name'] in names and test_cart_items[_item]['quantity'] < grabber['quantity'] and grabber['name'] == test_cart_items[_item]['name']:
+            del test_cart_items[_item]
+            break
+    names.append(cart.name)
     test_cart_items.append(grabber)
   return test_cart_items
 
