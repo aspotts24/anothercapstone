@@ -47,7 +47,7 @@ class Cartb(db.Model):
         option2present = db.Column(db.Integer)
     
 class option(db.Model):
-        optionID = db.Column(db.Integer)
+        optionID = db.Column(db.Integer, primary_key=True)
         name = db.Column(db.String(150))
         description = db.Column(db.String(500))
         price = db.Column(db.Integer)
