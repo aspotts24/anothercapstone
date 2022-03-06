@@ -40,7 +40,7 @@ class Cart(db.Model):
     
 class Cartb(db.Model):
         cartID = db.Column(db.Integer, primary_key=True)
-        itemID = db.Column(db.Integer)
+        itemID = db.Column(db.Integer)   #ought to be foreign key referencing Item
         price = db.Column(db.Integer)
         quantity = db.Column(db.Integer)
         option1present = db.Column(db.Integer)
@@ -56,8 +56,8 @@ class Itemsb(db.Model):
     itemID = db.Column(db.Integer, primary_key=True)
     price = db.Column(db.Integer)
     name = db.Column(db.String(150))
-    option1ID = db.Column(db.Integer)
-    option2ID = db.Column(db.Integer)
+    option1ID = db.Column(db.Integer)   #ought to be foreign key referencing option
+    option2ID = db.Column(db.Integer)   #ought to be foreign key referencing option
     description = db.Column(db.String(500))
     item_image = db.Column(db.String(40))
      
