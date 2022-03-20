@@ -50,12 +50,15 @@ def create_app():
     
     @login_manager.user_loader
     def load_user(id):
-        if session['account-type'] == 'User':
+        try:
+            if session['account-type'] == 'User':
+                return User.query.get(int(id))
+            elif session['account-type'] == 'Store':
+                return Store.query.get(int(id))
+            elif session['account-type'] == 'Employee':
+                return Employee.query.get(int(id))
+        except:
             return User.query.get(int(id))
-        elif session['account-type'] == 'Store':
-            return Store.query.get(int(id))
-        elif session['account-type'] == 'Employee':
-            return Employee.query.get(int(id))
 
     return app # end of create app
 
