@@ -1,7 +1,7 @@
 from multiprocessing.sharedctypes import Value
 import re
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
-from .models import User, Store, Employee, Cart
+from .models import User, Store, Employee, Cart, Order
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 # this is why user mixin needed to be added to user model
@@ -9,6 +9,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 from .menu import get_items, get_options, get_stores, get_employees
 
 store = Blueprint('store', __name__)
+
 
 @store.route('/edit-employees', methods=['POST', 'GET'])
 def edit_employees():
@@ -74,4 +75,70 @@ def remove_employee(id):
 
 @store.route('/current-orders', methods=['POST', 'GET'])
 def current_orders():
-  return render_template('currentorders.html', user=current_user)
+  orders = get_orders()
+  for person in orders:
+    for item in orders[person]:
+      if item['stat'] >= 3:
+        remove_order(item['id'])
+        orders = get_orders()
+  # Pushes the order status one step ahead
+  if request.method == 'POST':
+    for person in orders:
+      if request.form['push-status'] == person:
+        for item in orders[person]:
+          Order.query.get(item['id']).stat += 1
+          db.session.commit()
+          orders = get_orders()
+
+  return render_template('currentorders.html', user=current_user, orders=orders)
+
+@store.route('/remove_order/<int:id>')
+def remove_order(id):
+  order_to_delete = Order.query.get_or_404(id)
+  try:
+    db.session.delete(order_to_delete)
+    db.session.commit()
+    
+    # reassign ids so there in a good order
+    ids = [id[0] for id in Order.query.with_entities(Order.id).all()] # fixed
+    new_id = 1
+    for i in ids:
+      _id = Order.query.get(i)
+      _id.id = new_id
+      new_id += 1
+      db.session.commit()
+
+    return redirect(url_for('store.current_orders'))
+  except:
+    flash('Problem removing Order')
+    return redirect(url_for('store.current_orders'))
+
+
+def get_orders():
+  ids = [id[0] for id in Order.query.with_entities(Order.id).all()]
+  all_orders = {}
+  for id in ids:
+    order = Order.query.filter_by(id=id).first()
+    grabber = {'id': 0, 'customer_name': '', 'name': '', 'quantity': 0, 'stat': 1}
+    grabber['id'] = order.id
+    grabber['customer_name'] = order.customer_name
+    grabber['name'] = order.name
+    grabber['quantity'] = order.quantity
+    grabber['stat'] = order.stat
+    # Places orders into a dictionary based on customer to keep them orderly
+    if grabber['customer_name'] in all_orders:
+      all_orders[grabber['customer_name']] += [{'id': grabber['id'],'name': grabber['name'], 'quantity': grabber['quantity'], 'stat': grabber['stat']}]
+    else:
+      all_orders[grabber['customer_name']] = [{'id': grabber['id'],'name': grabber['name'], 'quantity': grabber['quantity'], 'stat': grabber['stat']}]
+  return all_orders
+
+def create_order(items, user):
+  for item in items:
+    # Gives customers unique names (Their first name plus website ID) incase multiple people with same name place orders
+    new_order = Order(customer_name=f"{user.first_name} ({user.id})", 
+    stat=1, 
+    name=item['name'], 
+    quantity=item['quantity'])
+    db.session.add(new_order)
+  db.session.commit()
+  return

@@ -1,2 +1,44 @@
 {% extends "base.html" %} {% block title %}Current Orders{% endblock %}
 {% block cart %}{{rows}}{% endblock %}
+{% block content%}
+
+<div class="album py-5 bg-light">
+    <h1 align="center">Current Orders</h1>
+    <div class="container">
+    {% for person in orders %}
+    <h2 align="center">{{person}}</h2>
+    <form method="POST">
+    <button type="submit" class="btn btn-primary" name="push-status" value='{{person}}' {% if orders[person][0]['stat'] >= 3 %} disabled {% endif %}>
+      {% if orders[person][0]['stat'] == 1 %} Order is Ready
+      {% elif orders[person][0]['stat'] == 2 %} Order Fulfilled
+      {% else %} Order Complete!
+      {% endif %}
+    </button>
+    </form>
+    <p></p>
+      <div class="row">
+        {% for item in orders[person] %}
+            <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                <p class="card-text">{{ item['name'] }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">
+                       Quantity: {{ item['quantity'] }}<br>
+                       Status: {% if item['stat'] == 1 %} Accepted
+                       {% elif item['stat'] == 2 %} Ready for Pickup/Out for delivery
+                       {% else %} Completed!
+                       {% endif %}
+                    </small>
+                </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+
+{% endblock %}

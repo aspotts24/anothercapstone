@@ -1,5 +1,10 @@
-from flask import Blueprint, render_template, flash, url_for, redirect
+from http.client import HTTPResponse
+import re, json
+from flask import Blueprint, render_template, flash, url_for, redirect, request, abort, jsonify
 from flask_login import current_user
+
+from website.views import successful
+from website.store import create_order
 from .models import Cart
 from . import db
 import stripe
@@ -58,6 +63,7 @@ def create_checkout_session():
     success_url='http://127.0.0.1:5000/successful',
     cancel_url='http://127.0.0.1:5000/website-cart',
   )
+    create_order(get_cart_items(), current_user)
     return redirect(session.url, code=303)
 
 
@@ -82,7 +88,3 @@ def get_cart_items():
     names.append(cart.name)
     test_cart_items.append(grabber)
   return test_cart_items
-
-# TODO Used to create orders for stores/employees to view/update
-def create_order(price, name):
-  return
