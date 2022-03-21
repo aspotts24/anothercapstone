@@ -15,9 +15,10 @@ def website_cart():
   total = 0
   subtotal = total_price_items()
 
-  if tip == None :
+  if tip == '' or tip == None:
+    tip = 0
     total = total_price_items()
-  else:
+  else: 
     total = total_price_items() + float(tip)
   
   rows = Cart.query.filter(Cart.id).count()
