@@ -5,8 +5,10 @@
 <div class="album py-5 bg-light">
     <h1 align="center">Menu</h1>
     <div class="container">
+      <h3>Pizzas</h3>
       <div class="row">
         {% for item in items %}
+        {%if item.category == 1%}
         <div class="col-md-4">
           <div class="card mb-4 shadow-sm">
             <svg class="bd-placeholder-img card-img-top" width="100%" height="225">
@@ -27,10 +29,93 @@
             </div>
           </div>
         </div>
+        {%endif%}
+        {% endfor %}
+      </div>
+
+      <h3>Sides</h3>
+      <div class="row">
+        {% for item in items %}
+        {%if item.category == 2%}
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225">
+              <image width="100%" height="405"
+                 class="eq__NEcontainer__currentAlarmAction"
+                 xlink:href="../static/pictures/{{item.img}}"></image>
+              <rect width="100%" height="405" class="eq__NEcontainer__currentAlarmAction"
+            style="fill:url(#godhelpme);">
+            </svg>
+            <div class="card-body">
+              <p class="card-text">{{ item.name }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="{{ url_for ('menu.item', id=item.id) }}"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
+                </div>
+                <small class="text-muted">${{ item.price }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        {%endif%}
+        {% endfor %}
+      </div>
+
+      <h3>Desserts</h3>
+      <div class="row">
+        {% for item in items %}
+        {%if item.category == 3%}
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225">
+              <image width="100%" height="405"
+                 class="eq__NEcontainer__currentAlarmAction"
+                 xlink:href="../static/pictures/{{item.img}}"></image>
+              <rect width="100%" height="405" class="eq__NEcontainer__currentAlarmAction"
+            style="fill:url(#godhelpme);">
+            </svg>
+            <div class="card-body">
+              <p class="card-text">{{ item.name }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="{{ url_for ('menu.item', id=item.id) }}"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
+                </div>
+                <small class="text-muted">${{ item.price }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        {%endif%}
+        {% endfor %}
+      </div>
+
+      <h3>Drinks</h3>
+      <div class="row">
+        {% for item in items %}
+        {%if item.category == 4%}
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225">
+              <image width="100%" height="405"
+                 class="eq__NEcontainer__currentAlarmAction"
+                 xlink:href="../static/pictures/{{item.img}}"></image>
+              <rect width="100%" height="405" class="eq__NEcontainer__currentAlarmAction"
+            style="fill:url(#godhelpme);">
+            </svg>
+            <div class="card-body">
+              <p class="card-text">{{ item.name }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="{{ url_for ('menu.item', id=item.id) }}"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
+                </div>
+                <small class="text-muted">${{ item.price }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        {%endif%}
         {% endfor %}
       </div>
     </div>
   </div>
-
-
 {% endblock %}

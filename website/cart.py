@@ -20,14 +20,18 @@ def website_cart():
   total = 0
   subtotal = total_price_items()
 
-  if tip == '' or tip == None:
+  if tip != type(int) or tip != type(float):
     tip = 0
     total = total_price_items()
-  else: 
+  else:
     total = total_price_items() + float(tip)
+  
+  new_total = str(total)
+  
+
   rows = Cart.query.filter(Cart.id).count()
   return render_template('cart.html', user=current_user, item=get_cart_items(), rows=rows, total='{:,.2f}'.format(total), subtotal='{:,.2f}'.format(subtotal),
-   tip='{:,.2f}'.format(float(tip)))
+    tip='{:,.2f}'.format(float(tip)))
 
 
 @cart.route('/delete/<int:id>')
