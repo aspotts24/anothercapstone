@@ -1,7 +1,8 @@
 # routes having to do with any type of authorization goes here
 
 from multiprocessing.sharedctypes import Value
-import re
+import smtplib
+from email.message import EmailMessage
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from .models import User, Store, Employee
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -94,3 +95,50 @@ def sign_up():
             flash('Account created!', category='success')
             return redirect(url_for('views.home'))
     return render_template("sign_up.html", user=current_user)
+
+@auth.route('/forgot-password', methods=['GET', 'POST'])
+def forgot_password():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        user = User.query.filter_by(email=email).first()
+        if user:
+            alert('pizza night password reset', 'your new password is 7654321', user.email)
+            flash('Your new password has been sent to your email', category='success')
+        else:
+            flash('Email does not exsist! Sign up now!', category='error')
+
+    return render_template("forgotpassword.html", user=current_user)
+
+@auth.route('/reset-password', methods=['GET', 'POST'])
+def reset_password():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        user = User.query.filter_by(email=email).first()
+        if user:
+            alert('pizza night password reset', 'your new password is 7654321', user.email)
+            flash('Your new password has been sent to your email', category='success')
+        else:
+            flash('Email does not exsist! Sign up now!', category='error')
+
+    return render_template("forgotpassword.html", user=current_user)
+
+
+def alert(subject, body, to):
+    msg = EmailMessage()
+    msg.set_content(body)
+    # your email and password
+    user = 'huntersautosender@gmail.com'
+    password = 'reukwfjkcrqizqta'
+    
+    # setting message subject and receiver to whatever values are passed
+    msg['subject'] = subject
+    msg['to'] = to
+    msg['from'] = user
+    
+    
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(user, password)
+    server.send_message(msg)
+    server.quit()
+
