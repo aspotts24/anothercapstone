@@ -1,5 +1,10 @@
-from flask import Blueprint, render_template, flash, url_for, redirect, request
+from http.client import HTTPResponse
+import re, json
+from flask import Blueprint, render_template, flash, url_for, redirect, request, abort, jsonify
 from flask_login import current_user
+
+from website.views import successful
+from website.store import create_order
 from .models import Cart
 from . import db
 import stripe
@@ -10,20 +15,8 @@ stripe.api_key = 'sk_test_51KOEoTEAaICJ0GdRPRiVmPSZIQQ9DVtzWqeNtuevHa01p74QcR5wC
 
 @cart.route('/website-cart', methods=['GET', 'POST'])
 def website_cart():
-  tip = request.form.get('tipp')
-  
-  total = 0
-  subtotal = total_price_items()
-
-  if tip == '' or tip == None:
-    tip = 0
-    total = total_price_items()
-  else: 
-    total = total_price_items() + float(tip)
-  
   rows = Cart.query.filter(Cart.id).count()
-  return render_template('cart.html', user=current_user, item=get_cart_items(), rows=rows, total='{:,.2f}'.format(total), subtotal='{:,.2f}'.format(subtotal),
-   tip='{:,.2f}'.format(float(tip)))
+  return render_template('cart.html', user=current_user, item=get_cart_items(), rows=rows)
 
 
 @cart.route('/delete/<int:id>')
@@ -70,6 +63,7 @@ def create_checkout_session():
     success_url='http://127.0.0.1:5000/successful',
     cancel_url='http://127.0.0.1:5000/website-cart',
   )
+    create_order(get_cart_items(), current_user)
     return redirect(session.url, code=303)
 
 
@@ -94,21 +88,3 @@ def get_cart_items():
     names.append(cart.name)
     test_cart_items.append(grabber)
   return test_cart_items
-
-def total_price_items():
-
-  ids = [id[0] for id in Cart.query.with_entities(Cart.id).all()]
-  total = 0
-  prices = []
-  for id in ids:
-    item = Cart.query.filter_by(id=id).first()
-    prices.append(item.price)
-    
-  for price in prices:
-    total = total + price
-  return total
-
-# TODO Used to create orders for stores/employees to view/update
-def create_order(price, name):
-  return
-
