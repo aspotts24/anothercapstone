@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, url_for, redirect
+from flask import Blueprint, render_template, flash, url_for, redirect, request
 from flask_login import current_user
 from .models import Cart
 from . import db
@@ -10,8 +10,20 @@ stripe.api_key = 'sk_test_51KOEoTEAaICJ0GdRPRiVmPSZIQQ9DVtzWqeNtuevHa01p74QcR5wC
 
 @cart.route('/website-cart', methods=['GET', 'POST'])
 def website_cart():
+  tip = request.form.get('tipp')
+  
+  total = 0
+  subtotal = total_price_items()
+
+  if tip == '' or tip == None:
+    tip = 0
+    total = total_price_items()
+  else: 
+    total = total_price_items() + float(tip)
+  
   rows = Cart.query.filter(Cart.id).count()
-  return render_template('cart.html', user=current_user, item=get_cart_items(), rows=rows)
+  return render_template('cart.html', user=current_user, item=get_cart_items(), rows=rows, total='{:,.2f}'.format(total), subtotal='{:,.2f}'.format(subtotal),
+   tip='{:,.2f}'.format(float(tip)))
 
 
 @cart.route('/delete/<int:id>')
@@ -83,6 +95,20 @@ def get_cart_items():
     test_cart_items.append(grabber)
   return test_cart_items
 
+def total_price_items():
+
+  ids = [id[0] for id in Cart.query.with_entities(Cart.id).all()]
+  total = 0
+  prices = []
+  for id in ids:
+    item = Cart.query.filter_by(id=id).first()
+    prices.append(item.price)
+    
+  for price in prices:
+    total = total + price
+  return total
+
 # TODO Used to create orders for stores/employees to view/update
 def create_order(price, name):
   return
+

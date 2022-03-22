@@ -51,15 +51,21 @@
             <hr>
             <div class="row">
                 <div class="col" style="padding-left:0;">{{rows}} items: </div>
-                <div class="col text-right">$ 29.97</div>
+                <div class="col text-right">$ {{subtotal}}</div>
             </div>
-            <form>
-                <p>Tip Online?</p> <input id="tip" placeholder="Amount in dollars"></input>
-                <p>Promo Code</p> <input id="code" placeholder="Enter promo code"></input>
+            <form method="POST">
+                <p>Tip Online?</p> <input id="tip" placeholder="Amount in dollars" name="tipp" ></input>
+                <p>Promo Code</p> <input id="code" placeholder="Enter promo code" name="discount"></input>
+                <button type="submit" class="btn btn-sm btn-outline-secondary">Update total</button>
             </form>
+
+            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                <div class="col">Tip</div>
+                <div class="col text-right">$ {{tip}}</div>
+            </div> 
             <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                 <div class="col">TOTAL PRICE</div>
-                <div class="col text-right">$ 31.50</div>
+                <div class="col text-right">$ {{total}}</div>
             </div> 
             
             <form action="/create-checkout-session" method="POST">
