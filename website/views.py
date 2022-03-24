@@ -8,8 +8,9 @@ from ssl import SSL_ERROR_SSL
 from flask import Blueprint, render_template, request, session, abort, jsonify
 from flask_login import current_user, user_accessed
 import stripe, json
-from .models import Cart, Order, User
+from .models import Cart, Order, User, Store
 from . import db
+from .menu import get_stores
 
 
 # this is our blueprint for views. this also needs to be declared in init
@@ -30,6 +31,23 @@ def successful():
   # find the number of items in cart
   rows = Cart.query.filter(Cart.id).count()
   return render_template('successful.html', user=current_user, rows=rows)
+
+@views.route('/start-order', methods = ['POST', 'GET'])
+def start_order():
+    rows = Cart.query.filter(Cart.id).count()
+    return render_template('start-order.html', user=current_user, rows=rows, stores=get_stores())
+
+@views.route('/order-type/<int:id>', methods = ['POST', 'GET'])
+def order_type(id):
+    orderTypes = []
+    store = Store.query.filter_by(id=id).first()
+    rows = Cart.query.filter(Cart.id).count()
+    if store.open == 1:
+        orderTypes.append('delivery')
+    elif store.open == 2:
+        orderTypes.append('delivery')
+        orderTypes.append('pick-up')
+    return render_template('order-type.html', user=current_user, rows=rows, stores=get_stores()[id-1], orderTypes=orderTypes)
 
 # TODO Webhook to read completed purchases, currently does not work.
 @views.route("/webhook", methods=['POST'])
