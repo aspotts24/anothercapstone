@@ -6,11 +6,10 @@ from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 import stripe
 import os
-# added import for 'Item' table
-from .models import Employee, Item, Cart, Store, Option
+from .models import Item, Cart, Store, Option
 from . import db, UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 from werkzeug.security import generate_password_hash, check_password_hash
-from .menu import get_items, get_options, get_stores
+from .getters import get_items, get_options, get_stores
 
 
 admin = Blueprint('admin', __name__)

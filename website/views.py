@@ -3,14 +3,13 @@
 # 1. home function (home.html)
 # 2. successful function (successful.html)
 
-import re
-from ssl import SSL_ERROR_SSL
-from flask import Blueprint, render_template, request, session, abort, jsonify
-from flask_login import current_user, user_accessed
-import stripe, json
-from .models import Cart, Order, User, Store
-from . import db
-from .menu import get_stores
+
+from flask import Blueprint, render_template, request
+from flask_login import current_user
+import stripe
+from .models import Cart, Store
+
+from .getters import get_stores
 
 
 # this is our blueprint for views. this also needs to be declared in init

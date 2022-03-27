@@ -1,5 +1,4 @@
-from http.client import HTTPResponse
-import re, json
+
 from flask import Blueprint, render_template, flash, url_for, redirect, request, abort, jsonify
 from flask_login import current_user
 
@@ -8,7 +7,7 @@ from website.store import create_order
 from .models import Cart
 from . import db
 import stripe
-
+from .getters import get_cart_items, total_price_items
 
 cart = Blueprint('cart', __name__)
 stripe.api_key = 'sk_test_51KOEoTEAaICJ0GdRPRiVmPSZIQQ9DVtzWqeNtuevHa01p74QcR5wCNOrPdisWya0OheTal3B6kIy7Tuk987Cuk3l00n89yrf6y'
@@ -80,41 +79,3 @@ def create_checkout_session():
   )
     create_order(get_cart_items(), current_user)
     return redirect(session.url, code=303)
-
-
-def get_cart_items():
-  ids = [id[0] for id in Cart.query.with_entities(Cart.id).all()]
-  test_cart_items = []
-  names = []
-  for id in ids:
-    cart = Cart.query.filter_by(id=id).first()
-    grabber = {'id': 0, 'name': '', 'price': 0, 'quantity': 0}
-    grabber['id'] = id
-    grabber['price'] = cart.price
-    grabber['quantity'] = cart.quantity
-    grabber['name'] = cart.name
-    for _name in names:
-      if _name == cart.name:
-        grabber['quantity'] += 1
-        for _item in range(len(test_cart_items)):
-          if test_cart_items[_item]['name'] in names and test_cart_items[_item]['quantity'] < grabber['quantity'] and grabber['name'] == test_cart_items[_item]['name']:
-            del test_cart_items[_item]
-            break
-    names.append(cart.name)
-    test_cart_items.append(grabber)
-  return test_cart_items
-
-def total_price_items():
-
-  ids = [id[0] for id in Cart.query.with_entities(Cart.id).all()]
-  total = 0
-  prices = []
-  for id in ids:
-    item = Cart.query.filter_by(id=id).first()
-    prices.append(item.price)
-    
-  for price in prices:
-    total = total + price
-  return total
-
-  

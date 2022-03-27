@@ -1,12 +1,12 @@
 from multiprocessing.sharedctypes import Value
 import re
-from flask import Blueprint, render_template, request, flash, redirect, url_for, session
-from .models import User, Store, Employee, Cart, Order
+from flask import Blueprint, render_template, request, flash, redirect, url_for
+from .models import Employee, Cart, Order
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 # this is why user mixin needed to be added to user model
-from flask_login import login_user, login_required, logout_user, current_user
-from .menu import get_items, get_options, get_stores, get_employees
+from flask_login import current_user
+from .getters import get_employees
 
 store = Blueprint('store', __name__)
 

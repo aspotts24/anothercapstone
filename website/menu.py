@@ -6,7 +6,7 @@ from flask import Blueprint, render_template, flash, url_for, redirect, request
 from flask_login import current_user
 from . import db
 from .models import Cart, Employee, Item, Option, Store
-
+from .getters import get_items
 
 # blueprint named menu, this needs to be added to __init__
 menu = Blueprint('menu', __name__)
@@ -50,30 +50,6 @@ def item(id):
     
     return render_template('item.html', user=current_user, current_item=get_items()[id-1], options=get_options(), rows=rows)
 
-
-# helper function for multiple functions in the program
-def get_items():
-  # variable 'ids' finds how many ids there are inside the item table
-  ids = [id[0] for id in Item.query.with_entities(Item.id).all()]
-  # we return test_items but it is inited as an empty list
-  test_items = []
-  # for every id inside of variable 'ids'
-  for id in ids:
-    # declare variable 'item' as the table 'item's column values where the id is
-    # the same as id being evaluated by the for loop (taken by variable ids).
-    item = Item.query.filter_by(id=id).first()
-    # declare starting key values (these values dont matter at all they will be replaced below)
-    grabber = {'id': 0, 'name': '', 'price': 0, 'desc': '', 'img': '', 'category': 0, 'options': ''}
-    # replace values that dont matter in grabber with values from item
-    grabber['id'] = item.id
-    grabber['name'] = item.name
-    grabber['price'] = item.price
-    grabber['desc'] = item.description
-    grabber['img'] = item.item_image
-    grabber['category'] = item.category
-    # append grabber to test_items (which we return)
-    test_items.append(grabber)
-  return test_items
 
 def get_stores():
   ids = [id[0] for id in Store.query.with_entities(Store.id).all()]

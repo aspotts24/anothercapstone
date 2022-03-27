@@ -18,7 +18,7 @@
             style="fill:url(#godhelpme);">
             </svg>
             <div class="card-body">
-              <p class="card-text">{{a_store.id}}</p>
+              <p class="card-text">{{a_store.first_name}}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <a href="{{ url_for ('views.order_type', id=a_store.id) }}"><button type="button" class="btn btn-sm btn-outline-secondary">Order from this store</button></a>

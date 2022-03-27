@@ -1,15 +1,13 @@
 # routes having to do with any type of authorization goes here
 
 from multiprocessing.sharedctypes import Value
-import smtplib
-from email.message import EmailMessage
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from .models import User, Store, Employee
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 # this is why user mixin needed to be added to user model
 from flask_login import login_user, login_required, logout_user, current_user
-
+from .getters import alert
 
 auth = Blueprint('auth', __name__)
 
@@ -123,22 +121,5 @@ def reset_password():
     return render_template("forgotpassword.html", user=current_user)
 
 
-def alert(subject, body, to):
-    msg = EmailMessage()
-    msg.set_content(body)
-    # your email and password
-    user = 'huntersautosender@gmail.com'
-    password = 'reukwfjkcrqizqta'
-    
-    # setting message subject and receiver to whatever values are passed
-    msg['subject'] = subject
-    msg['to'] = to
-    msg['from'] = user
-    
-    
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(user, password)
-    server.send_message(msg)
-    server.quit()
+
 
