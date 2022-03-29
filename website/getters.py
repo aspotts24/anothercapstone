@@ -150,3 +150,7 @@ def alert(subject, body, to):
     server.login(user, password)
     server.send_message(msg)
     server.quit()
+
+def getItemsInCart():
+    rows = Cart.query.filter(Cart.id).count()
+    return rows

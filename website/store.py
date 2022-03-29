@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 # this is why user mixin needed to be added to user model
 from flask_login import current_user
-from .getters import get_employees
+from .getters import get_employees, getItemsInCart
 
 store = Blueprint('store', __name__)
 
@@ -48,8 +48,7 @@ def edit_employees():
       return redirect(url_for('store.edit_employees'))
       # end of post request
   # rows to track cart quantity
-  rows = Cart.query.filter(Cart.id).count()
-  return render_template('editemployees.html', user=current_user, account=get_employees(), rows=rows)
+  return render_template('editemployees.html', user=current_user, account=get_employees(), rows = getItemsInCart())
 
 @store.route('/remove_employee/<int:id>')
 def remove_employee(id):

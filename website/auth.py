@@ -1,6 +1,5 @@
 # routes having to do with any type of authorization goes here
 
-from multiprocessing.sharedctypes import Value
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from .models import User, Store, Employee
 from werkzeug.security import generate_password_hash, check_password_hash

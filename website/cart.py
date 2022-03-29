@@ -7,7 +7,7 @@ from website.store import create_order
 from .models import Cart
 from . import db
 import stripe
-from .getters import get_cart_items, total_price_items
+from .getters import get_cart_items, total_price_items, getItemsInCart
 
 cart = Blueprint('cart', __name__)
 stripe.api_key = 'sk_test_51KOEoTEAaICJ0GdRPRiVmPSZIQQ9DVtzWqeNtuevHa01p74QcR5wCNOrPdisWya0OheTal3B6kIy7Tuk987Cuk3l00n89yrf6y'
@@ -26,10 +26,8 @@ def website_cart():
     total = total_price_items() + float(tip)
   
   new_total = str(total)
-  
 
-  rows = Cart.query.filter(Cart.id).count()
-  return render_template('cart.html', user=current_user, item=get_cart_items(), rows=rows, total='{:,.2f}'.format(total), subtotal='{:,.2f}'.format(subtotal),
+  return render_template('cart.html', user=current_user, item=get_cart_items(), rows=getItemsInCart(), total='{:,.2f}'.format(total), subtotal='{:,.2f}'.format(subtotal),
     tip='{:,.2f}'.format(float(tip)))
 
 
