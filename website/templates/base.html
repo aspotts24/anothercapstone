@@ -79,7 +79,8 @@
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Hey, {{user.first_name}}</a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="/logout">Logout</a>
+                <a class="dropdown-item" id="startOrder" href="/start-order">Start Order</a>
+                <a class="dropdown-item" href="/logout">Logout</a>
               </div>
             </li>
             {% endif %}
@@ -94,16 +95,10 @@
             </div>
           </li>
           {% endif %}
-
-          
-          
-          
         </div>
       </div>
     </nav>
 
-
-    
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %} {% if category ==
     'error' %}

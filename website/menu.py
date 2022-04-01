@@ -6,7 +6,7 @@ from flask import Blueprint, render_template, flash, url_for, redirect, request
 from flask_login import current_user
 from . import db
 from .models import Cart, Employee, Item, Option, Store
-
+from .getters import get_items, getItemsInCart, get_stores, get_employees, get_options
 
 # blueprint named menu, this needs to be added to __init__
 menu = Blueprint('menu', __name__)
@@ -20,8 +20,7 @@ menu = Blueprint('menu', __name__)
 # 4. rows (which returns the number of items currently in cart)
 @menu.route('/website-menu', methods=['GET', 'POST'])
 def website_menu():
-  rows = Cart.query.filter(Cart.id).count()
-  return render_template('menu.html', user=current_user, items=get_items(), rows=rows)
+  return render_template('menu.html', user=current_user, items=get_items(), rows = getItemsInCart())
 
 
 # this is the function for item/id.html (pass id to reference it inside the weblink)
@@ -45,74 +44,5 @@ def item(id):
     return redirect(url_for('menu.website_menu'))
     # end of post request
   else:
-    # return the html along with the info to be displayed
-    rows = Cart.query.filter(Cart.id).count()
-    
-    return render_template('item.html', user=current_user, current_item=get_items()[id-1], options=get_options(), rows=rows)
+    return render_template('item.html', user=current_user, current_item=get_items()[id-1], options=get_options(), rows = getItemsInCart())
 
-
-# helper function for multiple functions in the program
-def get_items():
-  # variable 'ids' finds how many ids there are inside the item table
-  ids = [id[0] for id in Item.query.with_entities(Item.id).all()]
-  # we return test_items but it is inited as an empty list
-  test_items = []
-  # for every id inside of variable 'ids'
-  for id in ids:
-    # declare variable 'item' as the table 'item's column values where the id is
-    # the same as id being evaluated by the for loop (taken by variable ids).
-    item = Item.query.filter_by(id=id).first()
-    # declare starting key values (these values dont matter at all they will be replaced below)
-    grabber = {'id': 0, 'name': '', 'price': 0, 'desc': '', 'img': '', 'category': 0, 'options': ''}
-    # replace values that dont matter in grabber with values from item
-    grabber['id'] = item.id
-    grabber['name'] = item.name
-    grabber['price'] = item.price
-    grabber['desc'] = item.description
-    grabber['img'] = item.item_image
-    grabber['category'] = item.category
-    # append grabber to test_items (which we return)
-    test_items.append(grabber)
-  return test_items
-
-def get_stores():
-  ids = [id[0] for id in Store.query.with_entities(Store.id).all()]
-  all_stores = []
-  for id in ids:
-    store = Store.query.filter_by(id=id).first()
-    grabber = {'id': 0, 'first_name': '', 'email': 0, 'password': '', 'phone': ''}
-    grabber['id'] = store.id
-    grabber['first_name'] = store.address
-    grabber['email'] = store.email
-    grabber['password'] = store.password
-    grabber['phone'] = store.phone
-    all_stores.append(grabber)
-  return all_stores
-
-def get_employees():
-  ids = [id[0] for id in Employee.query.with_entities(Employee.id).all()]
-  all_employees = []
-  for id in ids:
-    employee = Employee.query.filter_by(id=id).first()
-    grabber = {'id': 0, 'first_name': '', 'email': 0, 'password': '', 'phone': ''}
-    grabber['id'] = employee.id
-    grabber['first_name'] = employee.first_name
-    grabber['email'] = employee.email
-    grabber['password'] = employee.password
-    grabber['phone'] = employee.phone
-    all_employees.append(grabber)
-  return all_employees
-
-def get_options():
-    ids = [id[0] for id in Option.query.with_entities(Option.id).all()]
-    all_options = []
-    for id in ids:
-        option = Option.query.filter_by(id=id).first()
-        grabber = {'id':0, 'name':'', 'price':0, 'description': '', 'category': 0}
-        grabber['id'] = option.id
-        grabber['name'] = option.name
-        grabber['price'] = option.price
-        grabber['description'] = option.description
-        grabber['category'] = option.category
-        all_options.append(grabber)
-    return all_options
