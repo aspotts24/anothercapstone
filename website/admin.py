@@ -10,12 +10,17 @@ from .models import Item, Cart, Store, Option
 from . import db, UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 from werkzeug.security import generate_password_hash, check_password_hash
 from .getters import get_items, get_options, get_stores, getItemsInCart
+from .store import check_if_not_class
 
 
 admin = Blueprint('admin', __name__)
 
 @admin.route('/edititems', methods=['POST', 'GET'])
 def create_items():
+  # Returns to home page if not admin
+  if current_user.id != 1 or check_if_not_class("User"):
+    return redirect(url_for('views.home'))
+
   if request.method == 'POST':
     name = request.form.get('name')
     price = request.form.get('price')
@@ -46,6 +51,10 @@ def create_items():
 
 @admin.route('/editusers', methods=['POST', 'GET'])
 def create_users():
+  # Returns to home page if not admin
+  if current_user.id != 1 or check_if_not_class("User"):
+    return redirect(url_for('views.home'))
+
   # if admin adds a new user
   if request.method == 'POST':
     # take all of this information entered by admin inside of html
@@ -90,22 +99,30 @@ def create_users():
 
 @admin.route('/addoptions', methods=['POST', 'GET'])
 def addoptions():
-    if request.method == 'POST':
-        name = request.form.get('name')
-        price = request.form.get('price')
-        description = request.form.get('description')
-        category = request.form.get('category')
-        new_option = Option(name=name, price=price, description=description, category=category)
-        db.session.add(new_option)
-        db.session.commit()
-        flash('Option added!', category='success')
-        return redirect(url_for('admin.addoptions'))
-    else:
-        rows = Cart.query.filter(Cart.id).count()
-        return render_template('itemoption.html', user=current_user, rows=rows, options=get_options())
+  # Returns to home page if not admin
+  if current_user.id != 1 or check_if_not_class("User"):
+    return redirect(url_for('views.home'))
+
+  if request.method == 'POST':
+      name = request.form.get('name')
+      price = request.form.get('price')
+      description = request.form.get('description')
+      category = request.form.get('category')
+      new_option = Option(name=name, price=price, description=description, category=category)
+      db.session.add(new_option)
+      db.session.commit()
+      flash('Option added!', category='success')
+      return redirect(url_for('admin.addoptions'))
+  else:
+      rows = Cart.query.filter(Cart.id).count()
+      return render_template('itemoption.html', user=current_user, rows=rows, options=get_options())
 
 @admin.route('/remove_menu_item/<int:id>')
 def remove_menu_item(id):
+  # Returns to home page if not admin
+  if current_user.id != 1 or check_if_not_class("User"):
+    return redirect(url_for('views.home'))
+
   item_to_delete = Item.query.get_or_404(id)
   try:
     db.session.delete(item_to_delete)
@@ -125,6 +142,10 @@ def remove_menu_item(id):
 
 @admin.route('/remove_option/<int:id>')
 def remove_option(id):
+  # Returns to home page if not admin
+  if current_user.id != 1 or check_if_not_class("User"):
+    return redirect(url_for('views.home'))
+
   option_to_delete = Option.query.get_or_404(id)
   try:
     db.session.delete(option_to_delete)
@@ -147,6 +168,10 @@ def remove_option(id):
 
 @admin.route('/remove_user/<int:id>')
 def remove_user(id):
+  # Returns to home page if not admin
+  if current_user.id != 1 or check_if_not_class("User"):
+    return redirect(url_for('views.home'))
+  
   option_to_delete = Store.query.get_or_404(id)
   try:
     db.session.delete(option_to_delete)

@@ -1,7 +1,7 @@
 from multiprocessing.sharedctypes import Value
 import re
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import Employee, Cart, Order
+from .models import Employee, Cart, Order, User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 # this is why user mixin needed to be added to user model
@@ -10,9 +10,17 @@ from .getters import get_employees, getItemsInCart
 
 store = Blueprint('store', __name__)
 
+def check_if_not_class(class_name):
+  if current_user.__class__.__name__ == class_name:
+    return False
+  else:
+    return True
 
 @store.route('/edit-employees', methods=['POST', 'GET'])
 def edit_employees():
+  # Checks if logged in as store to access page
+  if check_if_not_class("Store"):
+    return redirect(url_for('views.home'))
   # if store adds a new employee
   if request.method == 'POST':
     email = request.form.get('email')
@@ -39,7 +47,8 @@ def edit_employees():
       new_employee = Employee(email=email,
       first_name=first_name,
       phone=phone,
-      password=generate_password_hash(password1, method='sha256'))
+      password=generate_password_hash(password1, method='sha256'),
+      store_id=current_user.id)
       # pass new_employee into database
       db.session.add(new_employee)
       # save database with new_employee passed
@@ -51,7 +60,12 @@ def edit_employees():
   return render_template('editemployees.html', user=current_user, account=get_employees(), rows = getItemsInCart())
 
 @store.route('/remove_employee/<int:id>')
+
 def remove_employee(id):
+  # Checks if logged in as store to access page
+  if check_if_not_class("Store"):
+    return redirect(url_for('views.home'))
+
   option_to_delete = Employee.query.get_or_404(id)
   try:
     db.session.delete(option_to_delete)
@@ -74,6 +88,11 @@ def remove_employee(id):
 
 @store.route('/current-orders', methods=['POST', 'GET'])
 def current_orders():
+  # Checks if logged in as store to access page
+  if check_if_not_class("Store") and check_if_not_class("Employee"):
+    if current_user.id != 1:
+      return redirect(url_for('views.home'))
+
   orders = get_orders()
   for person in orders:
     for item in orders[person]:
@@ -89,10 +108,15 @@ def current_orders():
           db.session.commit()
           orders = get_orders()
 
-  return render_template('currentorders.html', user=current_user, orders=orders)
+  return render_template('currentorders.html', user=current_user, orders=orders, rows = getItemsInCart())
 
 @store.route('/remove_order/<int:id>')
 def remove_order(id):
+  # Checks if logged in as store to access page
+  if check_if_not_class("Store") and check_if_not_class("Employee"):
+    if current_user.id != 1:
+      return redirect(url_for('views.home'))
+
   order_to_delete = Order.query.get_or_404(id)
   try:
     db.session.delete(order_to_delete)

@@ -80,12 +80,13 @@ def get_employees():
   all_employees = []
   for id in ids:
     employee = Employee.query.filter_by(id=id).first()
-    grabber = {'id': 0, 'first_name': '', 'email': 0, 'password': '', 'phone': ''}
+    grabber = {'id': 0, 'first_name': '', 'email': 0, 'password': '', 'phone': '', 'store_id': 0}
     grabber['id'] = employee.id
     grabber['first_name'] = employee.first_name
     grabber['email'] = employee.email
     grabber['password'] = employee.password
     grabber['phone'] = employee.phone
+    grabber['store_id'] = employee.store_id
     all_employees.append(grabber)
   return all_employees
 
@@ -154,3 +155,4 @@ def alert(subject, body, to):
 def getItemsInCart():
     rows = Cart.query.filter(Cart.id).count()
     return rows
+    
