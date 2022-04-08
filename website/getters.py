@@ -2,18 +2,21 @@ from .models import Cart, Store, Item, Employee, Option, Order
 from . import db
 import smtplib
 from email.message import EmailMessage
+from flask import flash, session
 
 def get_cart_items():
-  ids = [id[0] for id in Cart.query.with_entities(Cart.id).all()]
+  return session['cart']
+
+"""   ids = [id[0] for id in Cart.query.with_entities(Cart.id).all()]
   test_cart_items = []
   names = []
   for id in ids:
-    cart = Cart.query.filter_by(id=id).first()
+    cart = session['cart']
     grabber = {'id': 0, 'name': '', 'price': 0, 'quantity': 0}
     grabber['id'] = id
-    grabber['price'] = cart.price
-    grabber['quantity'] = cart.quantity
-    grabber['name'] = cart.name
+    grabber['price'] = cart['price']
+    grabber['quantity'] = cart['quantity']
+    grabber['name'] = cart['name']
     for _name in names:
       if _name == cart.name:
         grabber['quantity'] += 1
@@ -23,15 +26,13 @@ def get_cart_items():
             break
     names.append(cart.name)
     test_cart_items.append(grabber)
-  return test_cart_items
+  return test_cart_items """
 
 def total_price_items():
-  ids = [id[0] for id in Cart.query.with_entities(Cart.id).all()]
   total = 0
   prices = []
-  for id in ids:
-    item = Cart.query.filter_by(id=id).first()
-    prices.append(item.price)
+  for i in session['cart']:
+    prices.append(float(i['price']) * i['quantity'])
     
   for price in prices:
     total = total + price
@@ -80,12 +81,13 @@ def get_employees():
   all_employees = []
   for id in ids:
     employee = Employee.query.filter_by(id=id).first()
-    grabber = {'id': 0, 'first_name': '', 'email': 0, 'password': '', 'phone': ''}
+    grabber = {'id': 0, 'first_name': '', 'email': 0, 'password': '', 'phone': '', 'store_id': 0}
     grabber['id'] = employee.id
     grabber['first_name'] = employee.first_name
     grabber['email'] = employee.email
     grabber['password'] = employee.password
     grabber['phone'] = employee.phone
+    grabber['store_id'] = employee.store_id
     all_employees.append(grabber)
   return all_employees
 
@@ -108,29 +110,22 @@ def get_orders():
   all_orders = {}
   for id in ids:
     order = Order.query.filter_by(id=id).first()
-    grabber = {'id': 0, 'customer_name': '', 'name': '', 'quantity': 0, 'stat': 1}
+    grabber = {'id': 0, 'session_id': "", 'customer_name': '', 'name': '', 'quantity': 0, 'stat': 1}
     grabber['id'] = order.id
+    grabber['session_id'] = order.session_id
     grabber['customer_name'] = order.customer_name
     grabber['name'] = order.name
     grabber['quantity'] = order.quantity
     grabber['stat'] = order.stat
-    # Places orders into a dictionary based on customer to keep them orderly
-    if grabber['customer_name'] in all_orders:
-      all_orders[grabber['customer_name']] += [{'id': grabber['id'],'name': grabber['name'], 'quantity': grabber['quantity'], 'stat': grabber['stat']}]
-    else:
-      all_orders[grabber['customer_name']] = [{'id': grabber['id'],'name': grabber['name'], 'quantity': grabber['quantity'], 'stat': grabber['stat']}]
+    # Places orders into a dictionary based on cart session to keep them orderly
+    try:
+      if grabber['session_id'] in all_orders and grabber['stat'] < 3:
+        all_orders[grabber['session_id']] += [{'id': grabber['id'],'name': grabber['name'], 'quantity': grabber['quantity'], 'stat': grabber['stat'], 'customer_name': grabber['customer_name']}]
+      elif grabber['session_id'] not in all_orders and grabber['stat'] < 3:
+        all_orders[grabber['session_id']] = [{'id': grabber['id'],'name': grabber['name'], 'quantity': grabber['quantity'], 'stat': grabber['stat'], 'customer_name': grabber['customer_name']}]
+    except:
+      flash(f"Error grabbing order: {grabber['session_id']}")
   return all_orders
-
-def create_order(items, user):
-  for item in items:
-    # Gives customers unique names (Their first name plus website ID) incase multiple people with same name place orders
-    new_order = Order(customer_name=f"{user.first_name} ({user.id})",
-    stat=1,
-    name=item['name'],
-    quantity=item['quantity'])
-    db.session.add(new_order)
-  db.session.commit()
-  return
 
 def alert(subject, body, to):
     msg = EmailMessage()
@@ -152,5 +147,9 @@ def alert(subject, body, to):
     server.quit()
 
 def getItemsInCart():
-    rows = Cart.query.filter(Cart.id).count()
-    return rows
+    # rows = Cart.query.filter(Cart.id).count()
+    try:
+      rows = len(session['cart'])
+      return rows
+    except:
+      return 0

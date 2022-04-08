@@ -23,6 +23,7 @@ class Employee(db.Model, UserMixin): # store employee info to show admin whos wo
     phone = db.Column(db.String(150)) # for automated text about current delivery
     first_name = db.Column(db.String(150)) # admin to quicky identify employee
     onclock = db.Column(db.Integer) # config if dilvery driver is able to
+    store_id = db.Column(db.Integer) # what store the employee works at
 
 class Store(db.Model, UserMixin): # login for storefront section of website
     id = db.Column(db.Integer, primary_key=True)
@@ -56,7 +57,9 @@ class Cart(db.Model):
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    session_id = db.Column(db.String(500))
     name = db.Column(db.String(150))
     customer_name = db.Column(db.String(150))
     quantity = db.Column(db.Integer)
+    store_id = db.Column(db.Integer) # which store the order is assigned to
     stat = db.Column(db.Integer) # 1,2,3 order status accepted, on the way, completed

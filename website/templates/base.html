@@ -138,7 +138,11 @@
     <div class="container text-center">
       <small>Copyright &copy; Your Website</small>
       <br>
-      <small>Logged in as {{user.__class__.__name__}}</small>
+      <small>Logged in as 
+        {% if user.__class__.__name__ == "AnonymousUserMixin" %}
+        Guest
+      {% else %} {{user.__class__.__name__}}
+    {% endif %}</small>
     </div>
   </footer>
 </html>

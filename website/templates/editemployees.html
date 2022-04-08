@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block title %}Manage Employees{% endblock %} {% block
     content %}
     <form method="POST">
-      <h3 align="center">Add Employee</h3>
+      <h3 align="center">Add Employee to {{user.address}}</h3>
       <div class="form-group">
         <label for="email">Email Address</label>
         <input
@@ -23,12 +23,12 @@
         />
       </div>
       <div class="form-group">
-        <label for="firstName">Phone Number</label>
+        <label for="phone">Phone Number</label>
         <input
           type="text"
           class="form-control"
-          id="phoneNumber"
-          name="phoneNumber"
+          id="phone"
+          name="phone"
           placeholder="Enter phone number"
         />
       </div>
@@ -60,6 +60,7 @@
   <br/>
   <div class="row gx-4 gx-lg-5">
     {% for i in account %}
+    {% if i.store_id == user.id %}
     <div class="col-md-4 mb-5">
         <div class="card h-100">
             <div class="card-body">
@@ -70,6 +71,7 @@
             <div class="card-footer"><a class="btn btn-primary btn-sm" href="{{ url_for ('store.remove_employee', id=i.id) }}">Remove Employee</a></div>
         </div>
     </div>
+    {% endif %}
     {% endfor %}
   </div>
   <br/><br/>
