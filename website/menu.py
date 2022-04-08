@@ -2,7 +2,7 @@
 
 from unicodedata import category
 from click import option
-from flask import Blueprint, render_template, flash, url_for, redirect, request
+from flask import Blueprint, render_template, flash, url_for, redirect, request, session
 from flask_login import current_user
 from . import db
 from .models import Cart, Employee, Item, Option, Store
@@ -36,11 +36,17 @@ def item(id):
   if request.method == 'POST':
     name = request.form.get('name')
     price = request.form.get('price')
-    quantity = request.form.get('quantity')
-    cart_item = Cart(name=name, price=price, quantity=quantity)
+    quantity = int(request.form.get('quantity'))
+    for item in session['cart']:
+      if item['name'] == name:
+        item['quantity'] += 1
+        session.modified = True
+        return redirect(url_for('menu.website_menu'))
+    session['cart'] += [{'name': name, 'price': price, 'quantity': quantity, 'id': 0}]
+    """ cart_item = Cart(name=name, price=price, quantity=quantity)
     db.session.add(cart_item)
     db.session.commit()
-    flash('Added to cart!', category='success')
+    flash('Added to cart!', category='success') """
     return redirect(url_for('menu.website_menu'))
     # end of post request
   else:

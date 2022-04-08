@@ -57,6 +57,7 @@ class Cart(db.Model):
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    session_id = db.Column(db.String(500))
     name = db.Column(db.String(150))
     customer_name = db.Column(db.String(150))
     quantity = db.Column(db.Integer)

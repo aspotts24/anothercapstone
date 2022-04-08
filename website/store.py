@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 # this is why user mixin needed to be added to user model
 from flask_login import current_user
-from .getters import get_employees, getItemsInCart
+from .getters import get_employees, getItemsInCart, get_orders
 
 store = Blueprint('store', __name__)
 
@@ -94,11 +94,7 @@ def current_orders():
       return redirect(url_for('views.home'))
 
   orders = get_orders()
-  for person in orders:
-    for item in orders[person]:
-      if item['stat'] >= 3:
-        remove_order(item['id'])
-        orders = get_orders()
+
   # Pushes the order status one step ahead
   if request.method == 'POST':
     for person in orders:
@@ -135,25 +131,6 @@ def remove_order(id):
   except:
     flash('Problem removing Order')
     return redirect(url_for('store.current_orders'))
-
-
-def get_orders():
-  ids = [id[0] for id in Order.query.with_entities(Order.id).all()]
-  all_orders = {}
-  for id in ids:
-    order = Order.query.filter_by(id=id).first()
-    grabber = {'id': 0, 'customer_name': '', 'name': '', 'quantity': 0, 'stat': 1}
-    grabber['id'] = order.id
-    grabber['customer_name'] = order.customer_name
-    grabber['name'] = order.name
-    grabber['quantity'] = order.quantity
-    grabber['stat'] = order.stat
-    # Places orders into a dictionary based on customer to keep them orderly
-    if grabber['customer_name'] in all_orders:
-      all_orders[grabber['customer_name']] += [{'id': grabber['id'],'name': grabber['name'], 'quantity': grabber['quantity'], 'stat': grabber['stat']}]
-    else:
-      all_orders[grabber['customer_name']] = [{'id': grabber['id'],'name': grabber['name'], 'quantity': grabber['quantity'], 'stat': grabber['stat']}]
-  return all_orders
 
 def create_order(items, user):
   for item in items:

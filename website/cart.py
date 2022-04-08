@@ -1,10 +1,8 @@
 
-from flask import Blueprint, render_template, flash, url_for, redirect, request, abort, jsonify
+from flask import Blueprint, render_template, flash, url_for, redirect, request, abort, jsonify, session
 from flask_login import current_user
 
-from website.views import successful
-from website.store import create_order
-from .models import Cart
+from .models import Cart, Order
 from . import db
 import stripe
 from .getters import get_cart_items, total_price_items, getItemsInCart
@@ -14,6 +12,7 @@ stripe.api_key = 'sk_test_51KOEoTEAaICJ0GdRPRiVmPSZIQQ9DVtzWqeNtuevHa01p74QcR5wC
 
 @cart.route('/website-cart', methods=['GET', 'POST'])
 def website_cart():
+  print(session['cart'])
   tip = request.form.get('tipp')
   
   total = 0
@@ -33,10 +32,9 @@ def website_cart():
 
 @cart.route('/delete/<int:id>')
 def delete(id):
-  item_to_delete = Cart.query.get_or_404(id)
+  # item_to_delete = Cart.query.get_or_404(id)
   try:
-    db.session.delete(item_to_delete)
-    db.session.commit()
+    session['cart'].pop(id)
     flash('Item removed from cart')
     return redirect(url_for('cart.website_cart'))
   except:
@@ -46,34 +44,57 @@ def delete(id):
 
 @cart.route('/clearcart')
 def clearcart():
-  num_of_items_in_cart = [id[0] for id in Cart.query.with_entities(Cart.id).all()]
-  for item in num_of_items_in_cart:
-    item_to_delete = Cart.query.get_or_404(item)
-    try:
-      db.session.delete(item_to_delete)
-      db.session.commit()
-    except:
-      flash('Problem removing ', item_to_delete.name, ' from cart.' )
+  session['cart'] = []
   flash('All items removed from cart!')
   return redirect(url_for('cart.website_cart'))
 
 
 @cart.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
-    session = stripe.checkout.Session.create(
-    line_items=[{
+    cart = get_cart_items()
+    cart_items = []
+    for item in cart:
+      cart_items += [{
       'price_data': {
         'currency': 'usd',
         'product_data': {
-          'name': 'Pizza',
+          'name': item['name'],
         },
-        'unit_amount': 1999,
+        'unit_amount': int(item['price'].replace('.', '')),
       },
-      'quantity': 1,
-    }],
+      'quantity': item['quantity'],
+    }]
+    session = stripe.checkout.Session.create(
+    line_items=cart_items,
     mode='payment',
-    success_url='http://127.0.0.1:5000/successful',
+    success_url='http://127.0.0.1:5000/successful?session_id={CHECKOUT_SESSION_ID}',
     cancel_url='http://127.0.0.1:5000/website-cart',
   )
-    create_order(get_cart_items(), current_user)
     return redirect(session.url, code=303)
+
+def create_order(items, user, session):
+  # Checks if checkout id has already been used, does not add cart to orders if true
+  for order in  Order.query.with_entities(Order.session_id).all():
+    if order.session_id == session:
+      return
+  
+  for item in items:
+    # Gives customers unique names (Their first name plus website ID) incase multiple people with same name place orders
+    new_order = Order(customer_name=f"{user.first_name}",
+    stat=0,
+    session_id=session,
+    name=item['name'],
+    quantity=item['quantity'])
+    db.session.add(new_order)
+  db.session.commit()
+  return
+
+# this is our function for successful.html it holds all python code needed in order to properly display the page
+# Uses session id on success to add the order to the store side of the current orders page
+@cart.route('/successful', methods=['POST', 'GET'])
+def successful():
+  session = stripe.checkout.Session.retrieve(request.args.get('session_id'))
+  create_order(get_cart_items(), current_user, session['id'])
+
+
+  return render_template('successful.html', user=current_user, rows = getItemsInCart(), session=session)

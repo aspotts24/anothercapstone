@@ -1,5 +1,9 @@
 {% extends "base.html" %} {% block title %}successful{% endblock %}
 {% block cart %}{{rows}}{% endblock %}
 {% block content%}
-<h1>successful</h1>
+<h1 align='center'>{{user.first_name}}, your order was successful!</h1>
+<p align='center'>
+    {% set total = session['amount_total'] / 100 | float %}
+    Order total: {{"$%.2f" | format(total)}}
+</p>
 {% endblock %}
