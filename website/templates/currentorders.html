@@ -7,8 +7,8 @@
     <div class="container">
     {% for person in orders %}
     {% set order = orders[person][0]%}
-    <h2 align="center">{{order['customer_name']}}</h2>
-    <small align="center" class="text-muted">{{person}}</small>
+    <!-- Hover over the customer's name to see the session id attached to their order -->
+    <h2 align="center" title="SESSION ID: {{person}}">{{order['customer_name']}}</h2>
     <form method="POST">
     <button type="submit" class="btn btn-primary" name="push-status" value='{{person}}' {% if orders[person][0]['stat'] >= 3 %} disabled {% endif %}>
       {% if orders[person][0]['stat'] == 0 %} Accept Order
@@ -28,6 +28,10 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <small class="text-muted">
                        Quantity: {{ item['quantity'] }}<br>
+                       {% if item['options'] != [''] %} Additionals:<br>
+                       {% for option in item['options'] %} - {{option}}<br>
+                       {% endfor %}
+                       {% endif %}
                        Status: {% if item['stat'] == 0 %} Not yet Accepted
                        {% elif item['stat'] == 1 %} Accepted
                        {% elif item['stat'] == 2 %} Ready for Pickup/Out for delivery

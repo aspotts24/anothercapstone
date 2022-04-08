@@ -6,16 +6,17 @@
     <h1 align="center">{{ current_item.name }}</h1>
     <div class="container">
         <p>{{ current_item.desc }}</p>
+        <form method="POST">
         <p>
           {% for i in options %}
             {% if i.category == current_item.category %}
-              <input type="checkbox" id="options" name="options">
-              <label for="options">{{ i.name }} + {{i.price}}</label><br>
+              <input type="checkbox" id="options" name="options" value="{{i.name}}|{{i.price}}">
+              <label for="options">{{ i.name }} + ${{i.price}}</label><br>
             {% endif %}
           {% endfor %}
         </p>
         
-        <form method="POST">
+        
           <div class="form-group">
             <label for="name"></label>
             <input
