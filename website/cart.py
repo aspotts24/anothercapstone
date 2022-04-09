@@ -12,6 +12,9 @@ stripe.api_key = 'sk_test_51KOEoTEAaICJ0GdRPRiVmPSZIQQ9DVtzWqeNtuevHa01p74QcR5wC
 
 @cart.route('/website-cart', methods=['GET', 'POST'])
 def website_cart():
+  if not session.get('ordering_from'):
+    return redirect(url_for('views.start_order'))
+
   tip = request.form.get('tipp')
   
   total = 0
@@ -71,7 +74,7 @@ def create_checkout_session():
   )
     return redirect(session.url, code=303)
 
-def create_order(items, user, session):
+def create_order(items, user, session, store_id):
   # Checks if checkout id has already been used, does not add cart to orders if true
   for order in  Order.query.with_entities(Order.session_id).all():
     if order.session_id == session:
@@ -88,6 +91,7 @@ def create_order(items, user, session):
     new_order = Order(customer_name=f"{user.first_name}",
     stat=0,
     session_id=session,
+    store_id=int(store_id),
     options=temp_options,
     name=item['name'],
     quantity=item['quantity'])
@@ -100,7 +104,7 @@ def create_order(items, user, session):
 @cart.route('/successful', methods=['POST', 'GET'])
 def successful():
   session_id = stripe.checkout.Session.retrieve(request.args.get('session_id'))
-  create_order(get_cart_items(), current_user, session_id['id'])
+  create_order(get_cart_items(), current_user, session_id['id'], session['ordering_from'])
   session['cart'] = []
 
   return render_template('successful.html', user=current_user, rows = getItemsInCart(), session=session_id)

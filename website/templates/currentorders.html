@@ -7,6 +7,10 @@
     <div class="container">
     {% for person in orders %}
     {% set order = orders[person][0]%}
+    <!-- Only display orders for the current store or store employee you are signed in as. Admin can view all -->
+    {% if (order['store_id'] == user.id and user.__class__.__name__ == 'Store') or 
+      (order['store_id'] == user.store_id and user.__class__.__name__ == 'Employee') or
+      (user.__class__.__name__ == 'User' and user.id == 1) %}
     <!-- Hover over the customer's name to see the session id attached to their order -->
     <h2 align="center" title="SESSION ID: {{person}}">{{order['customer_name']}}</h2>
     <form method="POST">
@@ -44,6 +48,7 @@
         </div>
         {% endfor %}
       </div>
+      {% endif %}
       {% endfor %}
     </div>
   </div>

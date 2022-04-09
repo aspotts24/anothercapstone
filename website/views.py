@@ -4,7 +4,7 @@
 # 2. successful function (successful.html)
 
 
-from flask import Blueprint, render_template, request, session
+from flask import Blueprint, redirect, render_template, request, session, url_for
 from flask_login import current_user
 import stripe
 from .models import Cart, Store
@@ -21,6 +21,10 @@ def home():
 
 @views.route('/start-order', methods = ['POST', 'GET'])
 def start_order():
+    # This will set the current session to the selected store and use that store at checkout
+    if request.method == 'POST':
+        session['ordering_from'] = request.form['store_button']
+        return redirect(url_for('menu.website_menu'))
     return render_template('start-order.html', user=current_user, rows = getItemsInCart(), stores=get_stores())
 
 @views.route('/order-type/<int:id>', methods = ['POST', 'GET'])

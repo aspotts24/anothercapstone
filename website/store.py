@@ -1,6 +1,6 @@
 from multiprocessing.sharedctypes import Value
 import re
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from .models import Employee, Cart, Order, User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
@@ -94,6 +94,19 @@ def current_orders():
       return redirect(url_for('views.home'))
 
   orders = get_orders()
+
+  # Seperate orders by store id
+ #store_orders = []
+ #if not check_if_not_class('Employee'):
+ #  for order in orders:
+ #    if order[0]['store_id'] == current_user.store_id:
+ #      store_orders += order
+ #if not check_if_not_class('Store'):
+ #  for order in orders:
+ #    if orders[order][0]['store_id'] == current_user.id:
+ #      store_orders += [{order: orders[order]}]
+ #if not check_if_not_class('User') and current_user.id == 1:
+ #  store_orders = orders
 
   # Pushes the order status one step ahead
   if request.method == 'POST':
