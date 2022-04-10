@@ -110,9 +110,11 @@ def get_orders():
   all_orders = {}
   for id in ids:
     order = Order.query.filter_by(id=id).first()
-    grabber = {'id': 0, 'session_id': "", 'customer_name': '', 'name': '', 'quantity': 0, 'stat': 1}
+    grabber = {'id': 0, 'store_id': 0, 'session_id': '', 'options': [], 'customer_name': '', 'name': '', 'quantity': 0, 'stat': 1}
     grabber['id'] = order.id
+    grabber['store_id'] = order.store_id
     grabber['session_id'] = order.session_id
+    grabber['options'] = order.options.split(",")
     grabber['customer_name'] = order.customer_name
     grabber['name'] = order.name
     grabber['quantity'] = order.quantity
@@ -120,9 +122,9 @@ def get_orders():
     # Places orders into a dictionary based on cart session to keep them orderly
     try:
       if grabber['session_id'] in all_orders and grabber['stat'] < 3:
-        all_orders[grabber['session_id']] += [{'id': grabber['id'],'name': grabber['name'], 'quantity': grabber['quantity'], 'stat': grabber['stat'], 'customer_name': grabber['customer_name']}]
+        all_orders[grabber['session_id']] += [{'id': grabber['id'], 'store_id': grabber['store_id'], 'options': grabber['options'],'name': grabber['name'], 'quantity': grabber['quantity'], 'stat': grabber['stat'], 'customer_name': grabber['customer_name']}]
       elif grabber['session_id'] not in all_orders and grabber['stat'] < 3:
-        all_orders[grabber['session_id']] = [{'id': grabber['id'],'name': grabber['name'], 'quantity': grabber['quantity'], 'stat': grabber['stat'], 'customer_name': grabber['customer_name']}]
+        all_orders[grabber['session_id']] = [{'id': grabber['id'], 'store_id': grabber['store_id'], 'options': grabber['options'],'name': grabber['name'], 'quantity': grabber['quantity'], 'stat': grabber['stat'], 'customer_name': grabber['customer_name']}]
     except:
       flash(f"Error grabbing order: {grabber['session_id']}")
   return all_orders

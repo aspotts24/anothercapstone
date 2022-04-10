@@ -21,7 +21,9 @@
               <p class="card-text">{{a_store.first_name}}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <a href="{{ url_for ('views.order_type', id=a_store.id) }}"><button type="button" class="btn btn-sm btn-outline-secondary">Order from this store</button></a>
+                  <form method="POST">
+                  <button type="submit" class="btn btn-sm btn-outline-secondary" name="store_button" value="{{a_store.id}}">Order from this store</button>
+                  </form>
                 </div>
               </div>
             </div>

@@ -12,7 +12,9 @@ stripe.api_key = 'sk_test_51KOEoTEAaICJ0GdRPRiVmPSZIQQ9DVtzWqeNtuevHa01p74QcR5wC
 
 @cart.route('/website-cart', methods=['GET', 'POST'])
 def website_cart():
-  print(session['cart'])
+  if not session.get('ordering_from'):
+    return redirect(url_for('views.start_order'))
+
   tip = request.form.get('tipp')
   
   total = 0
@@ -60,7 +62,7 @@ def create_checkout_session():
         'product_data': {
           'name': item['name'],
         },
-        'unit_amount': int(item['price'].replace('.', '')),
+        'unit_amount': int(item['price'] * 100),
       },
       'quantity': item['quantity'],
     }]
@@ -72,7 +74,7 @@ def create_checkout_session():
   )
     return redirect(session.url, code=303)
 
-def create_order(items, user, session):
+def create_order(items, user, session, store_id):
   # Checks if checkout id has already been used, does not add cart to orders if true
   for order in  Order.query.with_entities(Order.session_id).all():
     if order.session_id == session:
@@ -80,9 +82,17 @@ def create_order(items, user, session):
   
   for item in items:
     # Gives customers unique names (Their first name plus website ID) incase multiple people with same name place orders
+    temp_options = ""
+    for o in item['options']:
+      if o == item['options'][-1]:
+        temp_options += o
+        break
+      temp_options += f"{o},"
     new_order = Order(customer_name=f"{user.first_name}",
     stat=0,
     session_id=session,
+    store_id=int(store_id),
+    options=temp_options,
     name=item['name'],
     quantity=item['quantity'])
     db.session.add(new_order)
@@ -93,8 +103,13 @@ def create_order(items, user, session):
 # Uses session id on success to add the order to the store side of the current orders page
 @cart.route('/successful', methods=['POST', 'GET'])
 def successful():
-  session = stripe.checkout.Session.retrieve(request.args.get('session_id'))
-  create_order(get_cart_items(), current_user, session['id'])
+  session_id = stripe.checkout.Session.retrieve(request.args.get('session_id'))
+  create_order(get_cart_items(), current_user, session_id['id'], session['ordering_from'])
+  session['cart'] = []
 
+  return render_template('successful.html', user=current_user, rows = getItemsInCart(), session=session_id)
 
-  return render_template('successful.html', user=current_user, rows = getItemsInCart(), session=session)
+@cart.before_request
+def init_cart():
+  if not session.get('cart'):
+    session['cart'] = []

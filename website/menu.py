@@ -35,14 +35,23 @@ def item(id):
   # start post request if user clicks on add to cart button
   if request.method == 'POST':
     name = request.form.get('name')
-    price = request.form.get('price')
+    price = float(request.form.get('price'))
     quantity = int(request.form.get('quantity'))
+    options = request.form.getlist('options')
+    # Adds option price to the item in the cart
+    i = 0
+    for o in options:
+      temp = o.split("|")
+      options[i] = temp[0]
+      price += float(temp[1])
+      i+=1
+
     for item in session['cart']:
-      if item['name'] == name:
+      if item['name'] == name and item['options'] == options:
         item['quantity'] += 1
         session.modified = True
         return redirect(url_for('menu.website_menu'))
-    session['cart'] += [{'name': name, 'price': price, 'quantity': quantity, 'id': 0}]
+    session['cart'] += [{'name': name, 'price': price, 'quantity': quantity, 'id': 0, 'options': options}]
     """ cart_item = Cart(name=name, price=price, quantity=quantity)
     db.session.add(cart_item)
     db.session.commit()
