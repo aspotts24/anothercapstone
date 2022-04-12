@@ -5,7 +5,7 @@ from flask_login import current_user
 from .models import Cart, Order
 from . import db
 import stripe
-from .getters import get_cart_items, total_price_items, getItemsInCart
+from .getters import get_cart_items, total_price_items, getItemsInCart, get_discounts
 
 cart = Blueprint('cart', __name__)
 stripe.api_key = 'sk_test_51KOEoTEAaICJ0GdRPRiVmPSZIQQ9DVtzWqeNtuevHa01p74QcR5wCNOrPdisWya0OheTal3B6kIy7Tuk987Cuk3l00n89yrf6y'
@@ -15,21 +15,34 @@ def website_cart():
   if not session.get('ordering_from'):
     return redirect(url_for('views.start_order'))
 
-  tip = request.form.get('tipp')
+  tip = request.form.get('tipp') # get user tip input
+  discount = request.form.get('discountt') # get user discount input
   
   total = 0
   subtotal = total_price_items()
+  discountTotal = discountPrice(subtotal, get_discounts(), discount)
 
-  if tip != type(int) or tip != type(float):
-    tip = 0
-    total = total_price_items()
-  else:
-    total = total_price_items() + float(tip)
   
-  new_total = str(total)
+  #This if statement will check if the user input is an empty string or a none value. so that way the website doesn't crash.
+  if tip == '' or tip == None:
+    tip = 0
+    total = subtotal
+  else:
+    total += subtotal + float(tip)
+
+  #This if statement will check if the subtotal of the cart is more than $20 to apply the discount,
+  # and also to check if the user input is an empty string or a none value.
+  
+  if discount == '' or discount == None:
+    total = subtotal
+    discountTotal = 0
+  elif subtotal >= 15:
+    total -= discountTotal
+  
+
 
   return render_template('cart.html', user=current_user, item=get_cart_items(), rows=getItemsInCart(), total='{:,.2f}'.format(total), subtotal='{:,.2f}'.format(subtotal),
-    tip='{:,.2f}'.format(float(tip)))
+    tip='{:,.2f}'.format(float(tip)), discount = '{:,.2f}'.format(float(discountTotal)))
 
 
 @cart.route('/delete/<int:id>')
@@ -113,3 +126,31 @@ def successful():
 def init_cart():
   if not session.get('cart'):
     session['cart'] = []
+
+
+def discountPrice(total, discounts, getDiscount):
+  
+  price_discounted = 0
+  discountArray = []
+  discountStr = []
+  dis = 0
+
+# This for loop will go through the discounts values inside the dict from getDiscount and save it
+# to the discountArray[]
+  for i in discounts:
+    discountArray.append(i['discount_info'] )
+# This for loop will create a new dict to store the discount and the string that the next
+# for loop will use to compare the user input discount with the ones that this loop created.
+  for num in discountArray:
+    grabber = {'discount': 0, 'string': ''}
+    grabber['discount'] = num
+    grabber['string'] = str(num) + '%OFF'
+    discountStr.append(grabber)
+# This loop will go through the string of the discountStr array to compare the strings with the user input
+  for j in discountStr:
+    if j['string'] == getDiscount or j['string'].lower() == getDiscount:
+      dis = int(j['discount']) / 100
+      price_discounted = total * dis
+
+
+  return price_discounted

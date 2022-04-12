@@ -1,4 +1,4 @@
-from .models import Cart, Store, Item, Employee, Option, Order
+from .models import Cart, Store, Item, Employee, Option, Order, Discount
 from . import db
 import smtplib
 from email.message import EmailMessage
@@ -90,6 +90,18 @@ def get_employees():
     grabber['store_id'] = employee.store_id
     all_employees.append(grabber)
   return all_employees
+
+
+def get_discounts():
+  ids = [id[0] for id in Discount.query.with_entities(Discount.id).all()]
+  all_discount = []
+  for id in ids:
+    discount = Discount.query.filter_by(id=id).first()
+    grabber = {'id': 0, 'discount_info': 0}
+    grabber['id'] = discount.id
+    grabber['discount_info'] = discount.discount_info
+    all_discount.append(grabber)
+  return all_discount
 
 def get_options():
     ids = [id[0] for id in Option.query.with_entities(Option.id).all()]

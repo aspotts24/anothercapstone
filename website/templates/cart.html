@@ -60,7 +60,7 @@
             </div>
             <form method="POST">
                 <p>Tip Online?</p> <input id="tip" placeholder="Amount in dollars" name="tipp" ></input>
-                <p>Promo Code</p> <input id="code" placeholder="Enter promo code" name="discount"></input>
+                <p>Promo Code</p> <input id="code" placeholder="Enter promo code" name="discountt"></input>
                 <button type="submit" class="btn btn-sm btn-outline-secondary">Update total</button>
             </form>
 
@@ -68,6 +68,10 @@
                 <div class="col">Tip</div>
                 <div class="col text-right">$ {{tip}}</div>
             </div> 
+            <div class="row">
+                <div class="column">Discount</div>
+                <div class="col text-right">- $ {{discount}}</div>
+            </div>
             <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                 <div class="col">TOTAL PRICE</div>
                 <div class="col text-right">$ {{total}}</div>

@@ -64,3 +64,7 @@ class Order(db.Model):
     quantity = db.Column(db.Integer)
     store_id = db.Column(db.Integer) # which store the order is assigned to
     stat = db.Column(db.Integer) # 1,2,3 order status accepted, on the way, completed
+
+class Discount(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    discount_info = db.Column(db.Integer) # type of discount

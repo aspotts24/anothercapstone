@@ -1,12 +1,12 @@
 from multiprocessing.sharedctypes import Value
 import re
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
-from .models import Employee, Cart, Order, User
+from .models import Employee, Cart, Order, User, Discount
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 # this is why user mixin needed to be added to user model
 from flask_login import current_user
-from .getters import get_employees, getItemsInCart, get_orders
+from .getters import get_employees, getItemsInCart, get_orders, get_discounts
 
 store = Blueprint('store', __name__)
 
@@ -144,6 +144,53 @@ def remove_order(id):
   except:
     flash('Problem removing Order')
     return redirect(url_for('store.current_orders'))
+
+
+@store.route('/add-discounts', methods=['GET','POST'])
+def add_discount():
+  if request.method == 'POST':
+    discount = request.form.get('discountt')
+    
+
+    if discount == None or discount == '':
+      flash('Error creating discount', category='success')
+      return redirect(url_for('store.add_discount'))
+    elif int(discount) > 50:
+      flash('Discount must be less than 50%', category='success')
+      return redirect(url_for('store.add_discount'))
+    else:
+      # create new discount by passing data into variable called 'new_dicount'
+      new_discount = Discount(discount_info=int(discount))
+      # pass new_employee into database
+      db.session.add(new_discount)
+      # save database with new_discount passed
+      db.session.commit()
+      flash('Discount Created!', category='success')
+      return redirect(url_for('store.add_discount'))
+
+  return render_template('addDiscounts.html', user=current_user, discount=get_discounts())
+
+@store.route('/remove_discount/<int:id>')
+def remove_discount(id):
+  option_to_delete = Discount.query.get_or_404(id)
+  try:
+    db.session.delete(option_to_delete)
+    db.session.commit()
+    
+    # reassign ids so there in a good order
+    ids = [id[0] for id in Discount.query.with_entities(Discount.id).all()] # fixed
+    new_id = 1
+    for i in ids:
+      _id = Discount.query.get(i)
+      _id.id = new_id
+      new_id += 1
+      db.session.commit()
+
+    flash('Discount removed')
+    return redirect(url_for('store.add_discount'))
+  except:
+    flash('Problem removing Discount')
+    return redirect(url_for('store.add_discount'))
 
 def create_order(items, user):
   for item in items:
