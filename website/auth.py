@@ -102,7 +102,7 @@ def forgot_password():
             alert('pizza night password reset', 'your new password is 7654321', user.email)
             flash('Your new password has been sent to your email', category='success')
         else:
-            flash('Email does not exsist! Sign up now!', category='error')
+            flash('Email does not exist! Sign up now!', category='error')
 
     return render_template("forgotpassword.html", user=current_user)
 
@@ -115,7 +115,7 @@ def reset_password():
             alert('pizza night password reset', 'your new password is 7654321', user.email)
             flash('Your new password has been sent to your email', category='success')
         else:
-            flash('Email does not exsist! Sign up now!', category='error')
+            flash('Email does not exist! Sign up now!', category='error')
 
     return render_template("forgotpassword.html", user=current_user)
 
