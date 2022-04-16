@@ -1,121 +1,298 @@
 {% extends "base.html" %} {% block title %}Menu{% endblock %}
 {% block cart %}{{rows}}{% endblock %}
 {% block content%}
+<style>
+  * {
+    font-family: Montserrat;
+  }
 
+  body,
+  html {
+    margin: 0;
+    height: auto;
+    border-radius: 12px 12px 12px 12px;
+  }
+
+  img {
+    min-height: 100%;
+    min-width: 100%;
+    background-size: cover;
+  }
+
+  .welcome {
+    font-weight: 300;
+    text-align: center;
+    font-size: 40px;
+    font-size: 2.5rem;
+    letter-spacing: 0px;
+    letter-spacing: 0.05rem;
+    font-weight: bold;
+    color: black;
+    border: 2px solid white;
+    box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, .8);
+    padding-left: .5em;
+    padding-right: .5em;
+  }
+
+
+  .subtitle {
+    text-align: left;
+    line-height: 1.3em;
+    letter-spacing: 0px;
+    letter-spacing: 0.02rem;
+    font-size: 3em;
+    color: rgba(0, 0, 0, .6);
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .album {
+    z-index: 100;
+    color: #fff;
+    font-family: Montserrat;
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: column;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    box-shadow: 0px 15px 50px 10px rgba(0, 0, 0, 1);
+    box-sizing: border-box;
+    height: auto;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, .8);
+    border-radius: 12px 12px 12px 12px;
+  }
+
+
+  .img1 {
+    border: 3px solid rgba(35, 190, 178, 1);
+    box-shadow: 0px 0px 5px 2px rgba(35, 190, 178, 1);
+    max-width: 100%;
+    max-height: 100%;
+
+  }
+
+  .btn {
+    cursor: pointer;
+    background: none;
+    border: 1px solid rgba(35, 190, 178, .6);
+    background-color: rgba(35, 190, 178, .6);
+    border-radius: 25px;
+    color: rgba(255, 255, 255, 1);
+    -webkit-align-self: flex-end;
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+    font-size: 14px;
+    font-size: 1rem;
+    font-family: Montserrat;
+    font-weight: 300;
+    line-height: 2.5em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+    width: 150px;
+  }
+
+  .btn:hover {
+    background: rgba(35, 190, 178, .9);
+    border: rgba(35, 190, 178, .9);
+    color: #fff;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  .container {
+    padding: 2em;
+    padding-top: 1.5em;
+  }
+
+  .bd-placeholder-img {
+    font-size: 1em;
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+    text-decoration: underline;
+    box-shadow: 0px 0px 5px 2px rgba(35, 190, 178, .9);
+    border-radius: 12px 12px 0 0;
+    padding: .5em;
+  }
+
+  .card {
+    border-radius: 12px 12px 12px 12px;
+  }
+
+  .card-body {
+    font-size: 1em;
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+    text-decoration: underline;
+    box-shadow: 0px 0px 5px 2px rgba(35, 190, 178, .9);
+    border-radius: 0 0 12px 12px;
+  }
+
+  .card-title {
+    color: black;
+  }
+
+  .card-text {
+    color: black !important;
+    font-size: 2em;
+  }
+
+  .spaceJam {
+    padding-bottom: 7em;
+  }
+
+  .randoBlocko {
+    position: fixed;
+    text-align: center;
+    width: 320px;
+    height: auto;
+    top: 20%;
+    right: 10%;
+    background-color: rgb(35, 190, 178);
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 12px 12px 12px 12px;
+    z-index: 400;
+  }
+
+  @media (max-width: 1000px) {
+    .window {
+      width: 100%;
+      height: 90%;
+    }
+
+    .overlay {
+      width: 100%;
+      height: 90%;
+    }
+  }
+</style>
 <div class="album py-5 bg-light">
-    <h1 align="center">Menu</h1>
-    <div class="container">
-      <h3>Pizzas</h3>
+  <div class='welcome'><img src="../static/pictures/menu.png" width="90%" height="90%" alt="Current Orders"></div>
+  <div class="container">
+    <div class='window'>
+      <div class="container"></div>
+      <div class="subtitle"> Pizza </div><br>
+      <div class="row" style="border-top: 2px solid rgba(0,0,0,.1); padding: 2vh 0;"></div>
       <div class="row">
-        {% for item in items %}
-        {%if item.category == 1%}
-        <div class="col-md-4">
-          <div class="card mb-4 shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225">
-              <image width="100%" height="405"
-                 class="eq__NEcontainer__currentAlarmAction"
-                 xlink:href="../static/pictures/{{item.img}}"></image>
-              <rect width="100%" height="405" class="eq__NEcontainer__currentAlarmAction"
-            style="fill:url(#godhelpme);">
-            </svg>
-            <div class="card-body">
-              <p class="card-text">{{ item.name }}</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <a href="{{ url_for ('menu.item', id=item.id) }}"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
-                </div>
-                <small class="text-muted">${{ item.price }}</small>
+      {% for item in items %}
+      {%if item.category == 1%}
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+          <svg class="bd-placeholder-img card-img-top" width="100%" height="225">
+            <image width="100%" height="405" class="eq__NEcontainer__currentAlarmAction"
+              xlink:href="../static/pictures/{{item.img}}"></image>
+            <rect width="100%" height="405" class="eq__NEcontainer__currentAlarmAction" style="fill:url(#godhelpme);">
+          </svg>
+          <div class="card-body">
+            <p class="card-text">
+              <center>{{ item.name }}<center>
+            </p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="{{ url_for ('menu.item', id=item.id) }}"><button type="button"
+                    class="btn btn-sm btn-outline-secondary">View</button></a>
               </div>
+              <medium class="text-muted">${{ item.price }}</medium>
             </div>
           </div>
         </div>
-        {%endif%}
-        {% endfor %}
       </div>
-
-      <h3>Sides</h3>
-      <div class="row">
-        {% for item in items %}
-        {%if item.category == 2%}
-        <div class="col-md-4">
-          <div class="card mb-4 shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225">
-              <image width="100%" height="405"
-                 class="eq__NEcontainer__currentAlarmAction"
-                 xlink:href="../static/pictures/{{item.img}}"></image>
-              <rect width="100%" height="405" class="eq__NEcontainer__currentAlarmAction"
-            style="fill:url(#godhelpme);">
-            </svg>
-            <div class="card-body">
-              <p class="card-text">{{ item.name }}</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <a href="{{ url_for ('menu.item', id=item.id) }}"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
-                </div>
-                <small class="text-muted">${{ item.price }}</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        {%endif%}
-        {% endfor %}
-      </div>
-
-      <h3>Desserts</h3>
-      <div class="row">
-        {% for item in items %}
-        {%if item.category == 3%}
-        <div class="col-md-4">
-          <div class="card mb-4 shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225">
-              <image width="100%" height="405"
-                 class="eq__NEcontainer__currentAlarmAction"
-                 xlink:href="../static/pictures/{{item.img}}"></image>
-              <rect width="100%" height="405" class="eq__NEcontainer__currentAlarmAction"
-            style="fill:url(#godhelpme);">
-            </svg>
-            <div class="card-body">
-              <p class="card-text">{{ item.name }}</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <a href="{{ url_for ('menu.item', id=item.id) }}"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
-                </div>
-                <small class="text-muted">${{ item.price }}</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        {%endif%}
-        {% endfor %}
-      </div>
-
-      <h3>Drinks</h3>
-      <div class="row">
-        {% for item in items %}
-        {%if item.category == 4%}
-        <div class="col-md-4">
-          <div class="card mb-4 shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225">
-              <image width="100%" height="405"
-                 class="eq__NEcontainer__currentAlarmAction"
-                 xlink:href="../static/pictures/{{item.img}}"></image>
-              <rect width="100%" height="405" class="eq__NEcontainer__currentAlarmAction"
-            style="fill:url(#godhelpme);">
-            </svg>
-            <div class="card-body">
-              <p class="card-text">{{ item.name }}</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <a href="{{ url_for ('menu.item', id=item.id) }}"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
-                </div>
-                <small class="text-muted">${{ item.price }}</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        {%endif%}
-        {% endfor %}
-      </div>
+      {%endif%}
+      {% endfor %}
     </div>
+    <div class="row" style="border-top: 2px solid rgba(0,0,0,.1); padding: 2vh 0;"></div>
+    <div class="subtitle"> Sides </div><br>
+    <div class="row">
+      {% for item in items %}
+      {%if item.category == 2%}
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+          <svg class="bd-placeholder-img card-img-top" width="100%" height="225">
+            <image width="100%" height="405" class="eq__NEcontainer__currentAlarmAction"
+              xlink:href="../static/pictures/{{item.img}}"></image>
+            <rect width="100%" height="405" class="eq__NEcontainer__currentAlarmAction" style="fill:url(#godhelpme);">
+          </svg>
+          <div class="card-body">
+            <p class="card-text"><center>{{ item.name }}<center></p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="{{ url_for ('menu.item', id=item.id) }}"><button type="button"
+                    class="btn btn-sm btn-outline-secondary">View</button></a>
+              </div>
+              <medium class="text-muted">${{ item.price }}</medium>
+            </div>
+          </div>
+        </div>
+      </div></div>
+      {%endif%}
+      {% endfor %}
+    </div>
+    <div class="row" style="border-top: 2px solid rgba(0,0,0,.1); padding: 2vh 0;"></div>
+    <div class="subtitle"> Desserts </div><br>
+    <div class="row">
+      {% for item in items %}
+      {%if item.category == 3%}
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+          <svg class="bd-placeholder-img card-img-top" width="100%" height="225">
+            <image width="100%" height="405" class="eq__NEcontainer__currentAlarmAction"
+              xlink:href="../static/pictures/{{item.img}}"></image>
+            <rect width="100%" height="405" class="eq__NEcontainer__currentAlarmAction" style="fill:url(#godhelpme);">
+          </svg>
+          <div class="card-body">
+            <p class="card-text"><center>{{ item.name }}<center></p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="{{ url_for ('menu.item', id=item.id) }}"><button type="button"
+                    class="btn btn-sm btn-outline-secondary">View</button></a>
+              </div>
+              <medium class="text-muted">${{ item.price }}</medium>
+            </div>
+          </div>
+        </div>
+      </div>
+      {%endif%}
+      {% endfor %}
+    </div>
+    <div class="row" style="border-top: 2px solid rgba(0,0,0,.1); padding: 2vh 0;"></div>
+    <div class="subtitle"> Drinks </div><br>
+    <div class="row">
+      {% for item in items %}
+      {%if item.category == 4%}
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+          <svg class="bd-placeholder-img card-img-top" width="100%" height="225">
+            <image width="100%" height="405" class="eq__NEcontainer__currentAlarmAction"
+              xlink:href="../static/pictures/{{item.img}}"></image>
+            <rect width="100%" height="405" class="eq__NEcontainer__currentAlarmAction" style="fill:url(#godhelpme);">
+          </svg>
+          <div class="card-body">
+            <p class="card-text"><center>{{ item.name }}<center></p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="{{ url_for ('menu.item', id=item.id) }}"><button type="button"
+                    class="btn btn-sm btn-outline-secondary">View</button></a>
+              </div>
+              <medium class="text-muted">${{ item.price }}</medium>
+            </div>
+          </div>
+        </div>
+      </div>
+      {%endif%}
+      {% endfor %}
+    </div></div>
+
+
   </div>
+</div>
+</div>
+<div class="spaceJam">
 {% endblock %}

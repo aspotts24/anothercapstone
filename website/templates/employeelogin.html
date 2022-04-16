@@ -1,31 +1,308 @@
 {% extends "base.html" %} {% block title %}Employee Login{% endblock %} {% block content
-    %}
-    <form method="POST">
-      <h3 align="center">Employee Login</h3>
-      <div class="form-group">
-        <label for="email">Email Address</label>
-        <input
-          type="email"
-          class="form-control"
-          id="email"
-          name="email"
-          placeholder="Enter email"
-        />
+%}
+<style>
+  /* Source https://codepen.io/Tbgse/pen/JXrJGX because I lack the skills */
+  * {
+    font-family: Montserrat;
+  }
+
+  body,
+  html {
+    margin: 0;
+    height: 80%;
+    border-radius: 12px 12px 12px 12px;
+  }
+
+  input {
+    border: none;
+  }
+
+  button:focus {
+    outline: none;
+  }
+
+  ::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  ::-webkit-input-placeholder .input-line:focus+::input-placeholder {
+    color: #fff;
+  }
+
+  .highlight {
+    color: rgba(0, 0, 0, 0.8);
+    font-weight: 400;
+    cursor: pointer;
+    transition: color .2s ease;
+    text-decoration: underline;
+  }
+
+  .highlight:hover {
+    color: rgba(35, 190, 178, .9);
+    font-weight: bold;
+    transition: color .2s ease;
+  }
+
+  .spacing {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    height: 120px;
+    font-weight: 300;
+    text-align: center;
+    margin-top: 10px;
+    color: rgba(0, 0, 0, 0.85)
+  }
+
+  a:link {
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+  a:visited {
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+  a:hover {
+    color: rgba(35, 190, 178, .9);
+  }
+
+  .input-line:focus {
+    outline: none;
+    border-color: #fff;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  .ghost-round {
+    cursor: pointer;
+    background: none;
+    border: 1px solid rgba(35, 190, 178, .6);
+    background-color: rgba(35, 190, 178, .6);
+    border-radius: 25px;
+    color: rgba(255, 255, 255, 1);
+    -webkit-align-self: flex-end;
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+    font-size: 19px;
+    font-size: 1.2rem;
+    font-family: Montserrat;
+    font-weight: 300;
+    line-height: 2.5em;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  .ghost-round2 {
+    cursor: pointer;
+    background: none;
+    border: 1px solid rgba(253, 189, 57, .6);
+    background-color: rgba(253, 189, 57, .6);
+    border-radius: 25px;
+    color: rgba(255, 255, 255, 1);
+    -webkit-align-self: flex-end;
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+    font-size: 19px;
+    font-size: 1.2rem;
+    font-family: Montserrat;
+    font-weight: 300;
+    line-height: 2.5em;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  .ghost-round:hover {
+    background: rgba(35, 190, 178, 1);
+    color: #fff;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  .ghost-round2:hover {
+    background: rgba(253, 189, 57, 1);
+    color: #fff;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  .input-line {
+    background: none;
+    margin-bottom: 10px;
+    line-height: 2.4em;
+    color: #fff;
+    font-family: Montserrat;
+    font-weight: 300;
+    letter-spacing: 0px;
+    letter-spacing: 0.02rem;
+    font-size: 19px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.65);
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .input-fields {
+    margin-top: 25px;
+  }
+
+  .container {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 90%;
+    padding-top: .0em;
+  }
+
+  .content {
+    padding-left: 25px;
+    padding-right: 25px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: column;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    z-index: 5;
+    border-radius: 25px;
+  }
+
+  .welcome {
+    font-weight: 300;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 40px;
+    font-size: 2.5rem;
+    letter-spacing: 0px;
+    letter-spacing: 0.05rem;
+    font-weight: bold;
+  }
+
+  .subtitle {
+    text-align: center;
+    line-height: 1.3em;
+    font-weight: 100;
+    letter-spacing: 0px;
+    letter-spacing: 0.02rem;
+    font-size: 25px;
+  }
+
+  .menu {
+    background: rgba(0, 0, 0, 0.2);
+    width: 100%;
+    height: 50px;
+  }
+
+  .window {
+    z-index: 100;
+    color: #fff;
+    font-family: Montserrat;
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: column;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    box-shadow: 0px 15px 50px 10px rgba(0, 0, 0, 1);
+    box-sizing: border-box;
+    height: 600px;
+    width: 760px;
+    background: #fff;
+    box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, .8);
+    border-radius: 12px 12px 12px 12px;
+  }
+
+  .overlay {
+    background: -webkit-linear-gradient(#ffffff, #000000);
+    background: linear-gradient(#000000, #ffffff);
+    opacity: 0.85;
+    filter: alpha(opacity=85);
+    height: 600px;
+    position: absolute;
+    width: 760px;
+    z-index: 1;
+    border-radius: 12px 12px 12px 12px;
+  }
+
+  .bold-line {
+    background: #e7e7e7;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    margin: auto;
+    width: 100%;
+    height: 360px;
+    z-index: 1;
+    opacity: 0.1;
+    background-size: cover;
+  }
+
+  @media (max-width: 1000px) {
+    .window {
+      width: 100%;
+      height: 90%;
+    }
+
+    .overlay {
+      width: 100%;
+      height: 90%;
+    }
+
+    .container {
+      margin-top: 3em;
+    }
+  }
+</style>
+
+<!-- Input Data -->
+<form method="POST">
+  <div class='container'>
+    <div class='window'>
+      <div class='overlay'></div>
+      <div class='content'>
+        <div class='welcome'>Welcome Back!</div>
+        <div class='subtitle'>Let's get to work.</div>
+        <div class='input-fields'>
+          <label for="email">Email Address:</label>
+          <input type="email" placeholder="Enter email" class="input-line full-width" id="email" name="email"></input>
+
+          <label for="password">Confirm password:</label>
+          <input type="password" placeholder="Enter password" class="input-line full-width" id="password"
+            name="password"></input>
+
+          <!-- I can not get this to go to any other page than home to save my life. -->
+          <div><button class='ghost-round full-width' name="store-login" value="Employee">Login as Employee</button>
+          </div>
+          <div><button class='ghost-round2 full-width' name="store-login" value="Manager">Login as Manager</button>
+          </div>
+        </div>
+        <!-- Links -->
+        <div class='spacing'>Customer? <span class='highlight'><a href="/login">Log In here!</a></span>
+          <div class='spacing'>Forgot your <span class='highlight'><a
+                href="{{ url_for ('auth.forgot_password') }}">Password?</a></span></div>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input
-          type="password"
-          class="form-control"
-          id="password"
-          name="password"
-          placeholder="Enter password"
-        />
-      </div>
-      <br />
-      <button type="submit" class="btn btn-primary" name="store-login" value="Employee">Login as Employee</button>
-      <button type="submit" class="btn btn-primary" name="store-login" value="Manager">Login as Manager</button>
-      <p></p>
-    </form>
-    {% endblock %}
-    
+    </div>
+</form>
+
+{% endblock %}

@@ -2,88 +2,494 @@
 {% block cart %}{{rows}}{% endblock %}
 
 {% block content%}
-<br/>
+<style>
+  /* Source https://codepen.io/Tbgse/pen/JXrJGX because I lack the skills */
+  * {
+    font-family: Montserrat;
+  }
+
+  body,
+  html {
+    margin: 0;
+    height: auto;
+    border-radius: 12px 12px 12px 12px;
+    /* background-image:url(); */
+  }
+
+  input {
+    border: none;
+  }
+
+  button:focus {
+    outline: none;
+  }
+
+  ::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  ::-webkit-input-placeholder .input-line:focus+::input-placeholder {
+    color: #fff;
+  }
+
+  .highlight {
+    color: rgba(0, 0, 0, 0.8);
+    font-weight: 400;
+    cursor: pointer;
+    transition: color .2s ease;
+    text-decoration: underline;
+  }
+
+  .highlight:hover {
+    color: rgba(35, 190, 178, .9);
+    font-weight: bold;
+    transition: color .2s ease;
+  }
+
+  .spacing {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    height: 120px;
+    font-weight: 300;
+    text-align: center;
+    margin-top: 10px;
+    color: rgba(0, 0, 0, 0.85)
+  }
+
+  a:link {
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+  a:visited {
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+  a:hover {
+    color: rgba(35, 190, 178, .9);
+  }
+
+  .input-line:focus {
+    outline: none;
+    border-color: #fff;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  .ghost-round {
+    cursor: pointer;
+    background: none;
+    border: 1px solid rgba(35, 190, 178, .6);
+    background-color: rgba(35, 190, 178, .6);
+    border-radius: 25px;
+    color: rgba(255, 255, 255, 1);
+    -webkit-align-self: flex-end;
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+    font-size: 19px;
+    font-size: 1.2rem;
+    font-family: Montserrat;
+    font-weight: 300;
+    line-height: 2.5em;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  .ghost-round:hover {
+    background: rgba(35, 190, 178, .9);
+    color: #fff;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  .btn {
+    cursor: pointer;
+    border: 1px solid rgba(35, 190, 178, .6);
+    background-color: rgba(35, 190, 178, .6);
+    border-radius: 25px;
+    color: rgba(255, 255, 255, 1);
+    -webkit-align-self: flex-end;
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+    font-size: 19px;
+    font-size: 1.2rem;
+    font-family: Montserrat;
+    font-weight: 300;
+    line-height: 1em;
+    margin-top: 120px;
+    margin-bottom: 25px;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+    margin: 0 auto;
+  }
+
+  .btn:hover {
+    background: rgba(35, 190, 178, .9);
+    border: rgba(35, 190, 178, .9);
+    color: #fff;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  .input-line {
+    background: none;
+    margin-bottom: 10px;
+    line-height: 2.4em;
+    color: #fff;
+    font-family: Montserrat;
+    font-weight: 300;
+    letter-spacing: 0px;
+    letter-spacing: 0.02rem;
+    font-size: 19px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.65);
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  /* Color of dropdown links */
+  .input-line option {
+    color: black;
+  }
+
+  .input-line::file-selector-button {
+    cursor: pointer;
+    border: 1px solid rgba(252, 201, 60, .85);
+    background-color: rgba(252, 201, 60, .85);
+    border-radius: 25px;
+    color: rgba(255, 255, 255, 1);
+    -webkit-align-self: flex-end;
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+    font-size: 19px;
+    font-size: 1.2rem;
+    font-family: Montserrat;
+    font-weight: 300;
+    line-height: 1em;
+    margin-top: 120px;
+    margin-bottom: 25px;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+    margin: 0 auto;
+  }
+
+  .input-line::file-selector-button:hover {
+    background: rgba(252, 201, 60, 1);
+    border: rgba(252, 201, 60, 1);
+    color: #fff;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .input-fields {
+    margin-top: 25px;
+  }
+
+  .container {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 100%;
+    padding-top: 1em;
+    margin-top: 1em;
+  }
+
+  .content {
+    padding-left: 25px;
+    padding-right: 25px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: column;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    z-index: 5;
+    border-radius: 25px;
+  }
+
+  .welcome {
+    font-weight: 300;
+    margin-top: 40px;
+    text-align: center;
+    font-size: 40px;
+    font-size: 2.5rem;
+    letter-spacing: 0px;
+    letter-spacing: 0.05rem;
+    font-weight: bold;
+    border: 2px solid white;
+    box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, .8);
+  }
+
+  .subtitle {
+    text-align: center;
+    line-height: 1.3em;
+    font-weight: 100;
+    letter-spacing: 0px;
+    letter-spacing: 0.02rem;
+    font-size: 25px;
+    text-decoration: underline;
+  }
+
+  .menu {
+    background: rgba(0, 0, 0, 0.2);
+    width: 100%;
+    height: 50px;
+  }
+
+  .window {
+    z-index: 100;
+    color: #fff;
+    font-family: Montserrat;
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: column;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    box-shadow: 0px 15px 50px 10px rgba(0, 0, 0, 1);
+    box-sizing: border-box;
+    top: 2em;
+    height: 950px;
+    width: 1000px;
+    background: #fff;
+    box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, .8);
+    border-radius: 12px 12px 12px 12px;
+  }
+
+  .overlay {
+    background: -webkit-linear-gradient(#ffffff, #000000);
+    background: linear-gradient(#000000, #797978);
+    opacity: 0.85;
+    filter: alpha(opacity=85);
+    box-sizing: border-box;
+    height: 950px;
+    position: absolute;
+    width: 1000px;
+    z-index: 1;
+    border-radius: 12px 12px 12px 12px;
+  }
+
+  .container1 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 80% auto;
+    padding-top: 4em;
+    padding-bottom: 4em;
+  }
+
+  .window1 {
+    z-index: 100;
+    color: #fff;
+    font-family: Montserrat;
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: column;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    box-shadow: 0px 15px 50px 10px rgba(0, 0, 0, 1);
+    box-sizing: border-box;
+    top: 4em;
+    height: 950px auto;
+    width: 1000px;
+    background: #fff;
+    box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, .8);
+    border-radius: 12px 12px 12px 12px;
+  }
+
+
+  .content1 {
+    padding-left: 25px;
+    padding-right: 25px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: column;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    z-index: 5;
+    /*  width: 1000px; */
+    border-radius: 25px;
+  }
+
+  .welcome1 {
+    font-weight: 300;
+    margin-top: 30px;
+    text-align: center;
+    font-size: 40px;
+    font-size: 3.5rem auto;
+    letter-spacing: 0px;
+    letter-spacing: 0.05rem;
+    font-weight: bolder;
+    color: rgba(35, 190, 178, .9);
+  }
+
+  .bold-line {
+    background: #e7e7e7;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    margin: auto;
+    width: 100%;
+    height: 360px;
+    z-index: 1;
+    opacity: 0.1;
+    background-size: cover;
+  }
+
+
+  .card-body {
+    font-size: 1em;
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+    text-decoration: underline;
+    box-shadow: 0px 0px 5px 2px rgba(35, 190, 178, .9);
+  }
+
+  .card-title {
+    color: black;
+  }
+
+  .card-text1 {
+    color: black !important;
+    font-size: .4em;
+  }
+
+  .spaceJam {
+    padding-bottom: 8em;
+  }
+
+  @media (max-width: 1070px) {
+    .window {
+      top: -2em;
+      width: 100%;
+      height: 100% auto;
+    }
+
+    .overlay {
+      width: 100%;
+      height: 100% auto;
+    }
+
+    .container {
+      margin-top: 1em;
+      height: auto;
+    }
+
+    .container1 {
+      height: 430px auto;
+    }
+
+    .headerIMG {
+      width: 100% auto;
+    }
+
+    .window1 {
+      top: 10em;
+      width: 100%;
+      height: 100% auto;
+    }
+  }
+</style>
+
+<br />
 <form method="POST" enctype="multipart/form-data">
-    <h3 align="center">Add Menu Item</h3>
+  <div class='container'>
+    <div class='window'>
+      <div class='overlay'></div>
+      <div class='content'>
+        <div class='welcome'><img src="../static/pictures/EditItems.png" width="100%" height="100%"
+            alt="Add Menu Items"></div>
+        <div class="input-fields">
+          <label for="name">Item Name:</label>
+          <input type="name" class="input-line full-width" id="name" name="name" placeholder="Item name" />
+        </div>
 
-    <div class="form-group">
-      <label for="name">Item Name</label>
-      <input
-        type="name"
-        class="form-control"
-        id="name"
-        name="name"
-        placeholder="Item name"
-      />
-    </div>
+        <div class="input-fields">
+          <label for="description">Description:</label>
+          <input type="description" class="input-line full-width" id="description" name="description"
+            placeholder="Item description" />
+        </div>
 
-    <div class="form-group">
-      <label for="description">Description</label>
-      <input
-        type="description"
-        class="form-control"
-        id="description"
-        name="description"
-        placeholder="Item description"
-      />
-    </div>
+        <div class="input-fields">
+          <label for="price">Price:</label>
+          <input type="price" class="input-line full-width" id="price" name="price" placeholder="Enter price" />
+        </div>
 
-    <div class="form-group">
-      <label for="price">Price</label>
-      <input
-        type="price"
-        class="form-control"
-        id="price"
-        name="price"
-        placeholder="Enter price"
-      />
-    </div>
+        <div class="input-fields">
+          <label for="category">Category Name:</label>
+          <select name="category" class="input-line full-width" id="category">
+            <option value="1">Pizza</option>
+            <option value="2">Sides</option>
+            <option value="3">Desserts</option>
+            <option value="4">Drinks</option>
+          </select>
+        </div>
 
-    <div class="form-group">
-      <label for="category">Category Name</label>
-      <select name="category" class="form-control" id="category">
-        <option value="1">Pizza</option>
-        <option value="2">Sides</option>
-        <option value="3">Desserts</option>
-        <option value="4">Drinks</option>
-      </select>
-    </div>
+        <div class="input-fields">
+          <label for="image">Image:</label>
+          <input type="file" class="input-line full-width" id="image" name="image" />
+        </div>
 
-    <div class="form-group">
-        <label for="image">Image</label>
-        <input
-          type="file"
-          class="form-control"
-          id="image"
-          name="image"
-        />
-    </div>
+        <br />
+        <button type="submit" class='ghost-round full-width'>Add Menu Item</button>
+      </div>
+</form>
 
-    <br/>
-    <button type="submit" class="btn btn-primary">Add Item</button>
-  </form>
-
-  <br/><br/>
-
-  <div class="album py-5 bg-light">
-    <h1 align="center">Menu</h1>
-    <div class="container">
+<br /><br />
+<div class='container'></div>
+<div class="window1">
+  <div class="content">
+    <div class='welcome'><img src="../static/pictures/currentitems.png" width="100%" height="100%"
+        alt="Current Menu Items"></div>
+    <div class="container1">
       <div class="row">
         {% for item in items %}
         <div class="col-md-4">
           <div class="card mb-4 shadow-sm">
             <svg class="bd-placeholder-img card-img-top" width="100%" height="225">
-              <image width="100%" height="405"
-                class="eq__NEcontainer__currentAlarmAction"
+              <image width="100%" height="255" class="eq__NEcontainer__currentAlarmAction"
                 xlink:href="../static/pictures/{{item.img}}"></image>
-              <rect width="100%" height="405" class="eq__NEcontainer__currentAlarmAction"
-            style="fill:url(#godhelpme);">
+              <rect width="100%" height="225" class="eq__NEcontainer__currentAlarmAction" style="fill:url(#godhelpme);">
             </svg>
             <div class="card-body">
               <p class="card-text">{{ item.name }}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <a href="  {{ url_for ('admin.remove_menu_item', id=item.id) }}"><button type="button" class="btn btn-sm btn-outline-secondary">Delete</button></a>
+                  <a href="  {{ url_for ('admin.remove_menu_item', id=item.id) }}"><button type="button"
+                      class="btn btn-sm btn-outline-secondary">Delete</button></a>
                 </div>
                 <small class="text-muted">${{ item.price }}</small>
               </div>
@@ -94,9 +500,11 @@
       </div>
     </div>
   </div>
+  <div class="spaceJam">
+  </div>
+</div>
 
-  <br/><br/>
 
-  
+
 
 {% endblock %}

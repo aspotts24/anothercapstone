@@ -1,57 +1,197 @@
 {% extends "base.html" %} {% block title %}Current Orders{% endblock %}
 {% block cart %}{{rows}}{% endblock %}
 {% block content%}
+<style>
+  /* Source https://codepen.io/Tbgse/pen/JXrJGX because I lack the skills */
+  * {
+    font-family: Montserrat;
+  }
 
+  body,
+  html {
+    margin: 0;
+    height: auto;
+    border-radius: 12px 12px 12px 12px;
+    /* background-image:url(); */
+  }
+
+  .container {
+    border-radius: 12px 12px 12px 12px !important;
+    height: 18.5em auto;
+    padding-top: 1.5em;
+  }
+
+  .album {
+    z-index: 100;
+    color: #fff;
+    font-family: Montserrat;
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: column;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    box-shadow: 0px 15px 50px 10px rgba(0, 0, 0, 1);
+    box-sizing: border-box;
+    height: auto;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, .8);
+    border-radius: 12px 12px 12px 12px;
+  }
+
+  .welcome {
+    font-weight: 300;
+    text-align: center;
+    font-size: 40px;
+    font-size: 2.5rem;
+    letter-spacing: 0px;
+    letter-spacing: 0.05rem;
+    font-weight: bold;
+    color: black;
+    border: 2px solid white;
+  }
+
+  .overlay {
+    background: -webkit-linear-gradient(#ffffff, #000000);
+    background: linear-gradient(#ffffff, #000000);
+    opacity: 0.85;
+    filter: alpha(opacity=85);
+    height: 800px auto;
+    width: auto;
+    z-index: 1;
+    border-radius: 12px 12px 12px 12px;
+  }
+
+  .subtitle {
+    text-align: center;
+    line-height: 1em;
+    font-weight: bolder;
+    letter-spacing: 0px;
+    letter-spacing: 0.02rem;
+    font-size: 40px;
+    color: #000;
+    text-decoration: underline;
+  }
+
+  .btn {
+    cursor: pointer;
+    border: 1px solid rgba(35, 190, 178, .6);
+    background-color: rgba(35, 190, 178, .6);
+    border-radius: 25px;
+    color: rgba(255, 255, 255, 1);
+    -webkit-align-self: flex-end;
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+    font-size: 19px;
+    font-size: 1.2rem;
+    font-family: Montserrat;
+    font-weight: 300;
+    line-height: 2em;
+    margin-top: 120px;
+    margin-bottom: 25px;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+    margin: 0 auto;
+    width: 50%;
+    text-align: center;
+  }
+
+  .btn:hover {
+    background: rgba(35, 190, 178, .9);
+    border: rgba(35, 190, 178, .9);
+    color: #fff;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  .card-body {
+    font-size: 1em;
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+    text-decoration: underline;
+    box-shadow: 0px 0px 5px 2px rgba(35, 190, 178, .9);
+    height: auto;
+  }
+
+  .card-title {
+    color: black;
+  }
+
+  .card-text1 {
+    color: black !important;
+    font-size: .4em;
+  }
+
+  .spaceJam {
+    margin: 7em;
+  }
+</style>
 <div class="album py-5 bg-light">
-    <h1 align="center">Current Orders</h1>
-    <div class="container">
-    {% for person in orders %}
-    {% set order = orders[person][0]%}
-    <!-- Only display orders for the current store or store employee you are signed in as. Admin can view all -->
-    {% if (order['store_id'] == user.id and user.__class__.__name__ == 'Store') or 
+  <div class='welcome'><img src="../static/pictures/Current Orders.png" width="90%" height="90%" alt="Current Orders">
+  </div>
+  <div class="container">
+    <div class='window'>
+      {% for person in orders %}
+      {% set order = orders[person][0]%}
+      <!-- Only display orders for the current store or store employee you are signed in as. Admin can view all -->
+      {% if (order['store_id'] == user.id and user.__class__.__name__ == 'Store') or
       (order['store_id'] == user.store_id and user.__class__.__name__ == 'Employee') or
       (user.__class__.__name__ == 'User' and user.id == 1) %}
-    <!-- Hover over the customer's name to see the session id attached to their order -->
-    <h2 align="center" title="SESSION ID: {{person}}">{{order['customer_name']}}</h2>
-    <form method="POST">
-    <button type="submit" class="btn btn-primary" name="push-status" value='{{person}}' {% if orders[person][0]['stat'] >= 3 %} disabled {% endif %}>
-      {% if orders[person][0]['stat'] == 0 %} Accept Order
-      {% elif orders[person][0]['stat'] == 1 %} Order is Ready
-      {% elif orders[person][0]['stat'] == 2 %} Order Fulfilled
-      {% else %} Order Complete!
-      {% endif %}
-    </button>
-    </form>
-    <p></p>
-      <div class="row">
-        {% for item in orders[person] %}
+      <!-- Hover over the customer's name to see the session id attached to their order -->
+      <div class="subtitle" title="SESSION ID: {{person}}">{{order['customer_name']}}<div>
+          <br>
+          <form method="POST">
+            <h3>
+              <button type="submit" class="btn btn-primary" name="push-status" value='{{person}}' {% if
+                orders[person][0]['stat']>= 3 %} disabled {% endif %}>
+                {% if orders[person][0]['stat'] == 0 %} Accept Order
+                {% elif orders[person][0]['stat'] == 1 %} Order is Ready
+                {% elif orders[person][0]['stat'] == 2 %} Order Fulfilled
+                {% else %} Order Complete!
+                {% endif %}
+              </button>
+          </form>
+          <p></p>
+          <div class="row">
+            {% for item in orders[person] %}
             <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
+              <div class="card mb-4 shadow-sm">
                 <div class="card-body">
-                <p class="card-text">{{ item['name'] }}</p>
-                <div class="d-flex justify-content-between align-items-center">
+                  <p class="card-text">{{ item['name'] }}</p>
+                  <div class="d-flex justify-content-between align-items-center">
                     <small class="text-muted">
-                       Quantity: {{ item['quantity'] }}<br>
-                       {% if item['options'] != [''] %} Additionals:<br>
-                       {% for option in item['options'] %} - {{option}}<br>
-                       {% endfor %}
-                       {% endif %}
-                       Status: {% if item['stat'] == 0 %} Not yet Accepted
-                       {% elif item['stat'] == 1 %} Accepted
-                       {% elif item['stat'] == 2 %} Ready for Pickup/Out for delivery
-                       {% else %} Completed!
-                       {% endif %}
+                      <center>
+                        Quantity: {{ item['quantity'] }}<br>
+                        {% if item['options'] != [''] %} Additionals:<br>
+                        {% for option in item['options'] %} - {{option}}<br>
+                        {% endfor %}
+                        {% endif %}
+                        Status: {% if item['stat'] == 0 %} Not yet Accepted
+                        {% elif item['stat'] == 1 %} Accepted
+                        {% elif item['stat'] == 2 %} Ready for Pickup/Out for delivery
+                        {% else %} Completed!
+                        {% endif %}
+                      </center>
                     </small>
+                  </div>
                 </div>
-                </div>
+              </div>
             </div>
+            {% endfor %}
+          </div>
+          </h3>
         </div>
+        {% endif %}
         {% endfor %}
       </div>
-      {% endif %}
-      {% endfor %}
     </div>
   </div>
+  <div class="spaceJam"></div>
+</div>
 
+<br>
 
 {% endblock %}

@@ -1,3 +1,24 @@
+.welcome {
+    font-weight: 300;
+    text-align: center;
+    font-size: 40px;
+    font-size: 2.5rem;
+    letter-spacing: 0px;
+    letter-spacing: 0.05rem;
+    font-weight: bold;
+    color: black;
+}
+
+.subtitle {
+    text-align: center;
+    line-height: 1em;
+    font-weight: bolder;
+    letter-spacing: 0px;
+    letter-spacing: 0.02rem;
+    font-size: 40px;
+    color: rgba(0,0,0,.7);
+}
+
 .card{
     /*add shadows to create the "card" effect*/
 
@@ -6,6 +27,7 @@
     width: 250px;
     background-color: lightgrey;
     margin: .30rem;
+    text-align: center;
 }
 
 .card:hover {
@@ -20,12 +42,95 @@ input[type=number]::-webkit-outer-spin-button{
 }
 
 .container {
-    padding: 2px 16px;
+    border-radius: 12px 12px 12px 12px !important;
+    height: 18.5em auto;
+    padding-top: 1.5em;
+    text-align: center;
 }
 
+.album {
+    z-index: 100;
+    color: rgba(0,0,0,.7);
+    font-family: Montserrat;
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: column;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    box-shadow: 0px 15px 50px 10px rgba(0, 0, 0, 1);
+    box-sizing: border-box;
+    height: auto;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, .8);
+    border-radius: 12px 12px 12px 12px;
+}
+
+.btn {
+    cursor: pointer;
+    border: 1px solid rgba(35, 190, 178, .6);
+    background-color: rgba(35, 190, 178, .6);
+    border-radius: 25px;
+    color: rgba(255, 255, 255, 1);
+    -webkit-align-self: flex-end;
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+    font-size: 19px;
+    font-size: 1.2rem;
+    font-family: Montserrat;
+    font-weight: 300;
+    line-height: 2em;
+    margin-top: 120px;
+    margin-bottom: 25px;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+}
+
+  .btn2 {
+    cursor: pointer;
+    border: 1px solid rgba(35, 190, 178, .6);
+    background-color: rgba(35, 190, 178, .6);
+    border-radius: 25px;
+    color: rgba(255, 255, 255, 1);
+    -webkit-align-self: flex-end;
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+    font-size: 19px;
+    font-size: 1.2rem;
+    font-family: Montserrat;
+    font-weight: 300;
+    line-height: 2em;
+    margin-top: 120px;
+    margin-bottom: 25px;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+    margin: 0 auto;
+    width: 50%;
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+  .btn:hover {
+    background: rgba(35, 190, 178, .9);
+    border: rgba(35, 190, 178, .9);
+    color: #fff;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+}
+
+.spaceJam {
+    margin: 7em;
+  }
+
 #removeD{
-    background-color:gray;
-    border-color: orange;
+    background-color:(35, 190, 178, .9);
+    border-color: (35, 190, 178, .9);
 }
 
 #removeD:hover{

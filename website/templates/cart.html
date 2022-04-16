@@ -2,22 +2,51 @@
 {% block cart %}{{rows}}{% endblock %}
 {% block content%}
 </br></br>
-<div class="bg"></div>
+<style>
+    .ghost-round {
+        cursor: pointer;
+        background: none;
+        border: 1px solid rgba(35, 190, 178, .6);
+        background-color: rgba(35, 190, 178, .6);
+        border-radius: 25px;
+        color: rgba(255, 255, 255, 1);
+        -webkit-align-self: flex-end;
+        -ms-flex-item-align: end;
+        align-self: flex-end;
+        font-size: 19px;
+        font-size: 1.2rem;
+        font-family: Montserrat;
+        font-weight: 300;
+        line-height: 2.5em;
+        margin-top: 20px;
+        margin-bottom: 25px;
+        -webkit-transition: all .2s ease;
+        transition: all .2s ease;
+        width: 100%;
+    }
 
+    .ghost-round:hover {
+        background: rgba(35, 190, 178, .9);
+        color: #fff;
+        -webkit-transition: all .2s ease;
+        transition: all .2s ease;
+    }
+</style>
+<div class="bg"></div>
 <div class="card">
     <link rel="stylesheet" href="../static/cart.css">
     <div class="row">
         <div class="col-md-8 cart">
-            
+
             <div class="title">
                 <div class="row">
                     <div class="col">
-                        <h4><b>Cart</b></h4>
+                        <h3><b>Cart</b></h3>
                     </div>
                     <div class="col align-self-center text-right text-muted"></div>
                 </div>
             </div>
-            
+
             {% for items in item %}
             <div class="row border-top border-bottom">
                 <div class="row main align-items-center">
@@ -30,7 +59,8 @@
                             {% endfor %}
                         </p>
                     </div>
-                    <div class="col"> <a href="#">-</a><a class="border">{{ items['quantity'] }}</a><a href="#">+</a> </div>
+                    <div class="col"> <a href="#">-</a><a class="border">{{ items['quantity'] }}</a><a href="#">+</a>
+                    </div>
                     <div class="col">${{ items['price'] * items['quantity']}}
                         <span class="close">
                             <a href="{{ url_for('cart.delete', id=items.id)}}">&#10005;</a>
@@ -40,11 +70,12 @@
             </div>
             {% endfor %}
             {% if rows == 0 %}
-                <p>There are currently no items in your cart. Add some now by browsing the menu.</p>
+            <p>There are currently no items in your cart. Add some now by browsing the menu.</p>
             {% endif %}
-            <br/><br/>
+            <br /><br />
             <div class="buttons-inside-cart">
-                <a href="{{ url_for ('menu.website_menu') }}">&leftarrow; Back to shop</a><span class="text-muted"></span>
+                <a href="{{ url_for ('menu.website_menu') }}">&leftarrow; Back to shop</a><span
+                    class="text-muted"></span>
                 <a href="{{ url_for ('cart.clearcart') }}">&#10005; Remove all items</a><span class="text-muted"></span>
             </div>
 
@@ -59,15 +90,15 @@
                 <div class="col text-right">$ {{subtotal}}</div>
             </div>
             <form method="POST">
-                <p>Tip Online?</p> <input id="tip" placeholder="Amount in dollars" name="tipp" ></input>
+                <p>Tip Online?</p> <input id="tip" placeholder="Amount in dollars" name="tipp"></input>
                 <p>Promo Code</p> <input id="code" placeholder="Enter promo code" name="discountt"></input>
-                <button type="submit" class="btn btn-sm btn-outline-secondary">Update total</button>
+                <button type="submit" class='ghost-round full-width'>Update total</button>
             </form>
 
             <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                 <div class="col">Tip</div>
                 <div class="col text-right">$ {{tip}}</div>
-            </div> 
+            </div>
             <div class="row">
                 <div class="column">Discount</div>
                 <div class="col text-right">- $ {{discount}}</div>
@@ -75,15 +106,15 @@
             <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                 <div class="col">TOTAL PRICE</div>
                 <div class="col text-right">$ {{total}}</div>
-            </div> 
-            
+            </div>
+
             <form action="/create-checkout-session" method="POST">
                 <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Checkout</button>
+                    <button type="submit" class='ghost-round full-width'>Checkout</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<br/><br/><br/><br/><br/><br/><br/>
+<br /><br /><br /><br /><br /><br /><br />
 {% endblock %}

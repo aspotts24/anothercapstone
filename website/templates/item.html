@@ -1,56 +1,173 @@
 {% extends "base.html" %} {% block title %}Item{% endblock %}
 {% block cart %}{{rows}}{% endblock %}
 {% block content%}
+<style>
+  * {
+    font-family: Montserrat;
+  }
 
+  body,
+  html {
+    margin: 0;
+    height: auto;
+    border-radius: 12px 12px 12px 12px;
+  }
+
+  .welcome {
+    font-weight: 300;
+    margin-top: 40px;
+    text-align: center;
+    font-size: 60px;
+    font-size: 4rem;
+    letter-spacing: 0px;
+    letter-spacing: 0.05rem;
+    font-weight: bold;
+    color: rgba(35, 190, 178, 1);
+    padding-top: 5px;
+  }
+
+  .subtitle {
+    text-align: left;
+    line-height: 1.3em;
+    letter-spacing: 0px;
+    letter-spacing: 0.02rem;
+    font-size: 4em;
+    color: rgba(0, 0, 0, .6);
+    font-weight: bold;
+  }
+
+  .subtitle2 {
+    text-align: left;
+    line-height: 1.3em;
+    letter-spacing: 0px;
+    letter-spacing: 0.02rem;
+    font-size: 1.4em;
+    color: rgba(0, 0, 0, .6);
+    font-weight: bold;
+  }
+
+  .album {
+    z-index: 100;
+    color: #fff;
+    font-family: Montserrat;
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: column;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    box-shadow: 0px 15px 50px 10px rgba(0, 0, 0, 1);
+    box-sizing: border-box;
+    height: auto;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, .8);
+    border-radius: 12px 12px 12px 12px;
+  }
+
+  .image {
+    border: 3px solid rgba(35, 190, 178, 1);
+    box-shadow: 0px 0px 5px 2px rgba(35, 190, 178, 1);
+    max-width: 100%;
+    max-height: 100%;
+
+  }
+
+  .btn {
+    cursor: pointer;
+    background: none;
+    border: 1px solid rgba(35, 190, 178, .6);
+    background-color: rgba(35, 190, 178, .6);
+    border-radius: 25px;
+    color: rgba(255, 255, 255, 1);
+    -webkit-align-self: flex-end;
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+    font-size: 14px;
+    font-size: 1rem;
+    font-family: Montserrat;
+    font-weight: 300;
+    line-height: 2.5em;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+    width: 150px;
+  }
+
+  .btn:hover {
+    background: rgba(35, 190, 178, .9);
+    border: rgba(35, 190, 178, .9);
+    color: #fff;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  .container {
+    color: rgba(35, 190, 178, .9);
+    font-size: 1em;
+    padding: 2em;
+  }
+
+  .spaceJam {
+    padding-bottom: 7em;
+  }
+
+  @media (max-width: 1000px) {
+    .window {
+      width: 100%;
+      height: 90%;
+    }
+
+    .overlay {
+      width: 100%;
+      height: 90%;
+    }
+  }
+</style>
 <div class="album py-5 bg-light">
-    <h1 align="center">{{ current_item.name }}</h1>
-    <div class="container">
-        <p>{{ current_item.desc }}</p>
-        <form method="POST">
-        <p>
-          {% for i in options %}
-            {% if i.category == current_item.category %}
-              <input type="checkbox" id="options" name="options" value="{{i.name}}|{{i.price}}">
-              <label for="options">{{ i.name }} + ${{i.price}}</label><br>
-            {% endif %}
-          {% endfor %}
-        </p>
-        
-        
-          <div class="form-group">
-            <label for="name"></label>
-            <input
-            type="hidden"
-            id="name"
-            name="name"
-            value="{{current_item.name}}"
-            />
-          </div>
-          
-          <div class="form-group">
-            <label for="price"></label>
-            <input
-            type="hidden"
-            id="price"
-            name="price"
-            value="{{current_item.price}}"
-            />
-          </div>
+  <div class="subtitle">
+    <center>{{ current_item.name }}</center>
+  </div><br>
+  <!--<image width="100%" height="405"
+            xlink:href="../static/pictures/{{current_item.img}}"></image>-->
+  <div class="container" style="font-size: 2em;">
+    <p>{{ current_item.desc }}</p>
+    <form method="POST" style="font-size: .7em;">
+      <div class="subtitle2">Add something extra: </div>
+      <p>
+        {% for i in options %}
+        {% if i.category == current_item.category %}
+        <input type="checkbox" id="options" name="options" value="{{i.name}}|{{i.price}}">
+        <label for="options">{{ i.name }} + ${{i.price}}</label><br>
+        {% endif %}
+        {% endfor %}
+      </p>
 
-          <div class="form-group">
-            <label for="quantity"></label>
-            <input
-            type="hidden"
-            id="quantity"
-            name="quantity"
-            value="{{1}}"
-            />
-          </div>
-          
-          {% if current_user.is_authenticated %}
-          <button type="submit" class="btn btn-sm btn-outline-secondary">Add to Cart</button>
-          {% endif %}
-      </form>
-    </div>
+
+      <div class="form-group">
+        <label for="name"></label>
+        <input type="hidden" id="name" name="name" value="{{current_item.name}}" />
+      </div>
+
+      <div class="form-group">
+        <label for="price"></label>
+        <input type="hidden" id="price" name="price" value="{{current_item.price}}" />
+      </div>
+
+      <div class="form-group">
+        <label for="quantity"></label>
+        <input type="hidden" id="quantity" name="quantity" value="{{1}}" />
+      </div>
+
+      {% if current_user.is_authenticated %}
+      <button type="submit" class="btn btn-sm btn-outline-secondary">Add to Cart</button>
+      {% endif %}
+    </form>
+  </div>
 </div>
-{% endblock %}
+</div>
+<div class="spaceJam">
+  {% endblock %}

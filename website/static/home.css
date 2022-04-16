@@ -11,13 +11,11 @@ body {
   background-size: cover;
   -o-background-size: cover;
   z-index: -5;
-  height: 100%;
+  height: auto;
   font-family: 'Montserrat', sans-serif;
 }
 
-#page-content {
-  flex: 1 0 auto;
-}
+
 /* Contact bar */
 .contact-bar { /* Contact bar font */
     text-align: center;
@@ -27,11 +25,11 @@ body {
     text-decoration: inherit;
 }
 .contact-bar .bar{ /* Bar with the contact information at top */
-    padding-top: 10px;
+    padding-top: 20px;
     padding-bottom: 10px;
     background-color: rgba(0,0,0,0.8);
     width: 100%;
-    position: fixed;
+    position: absolute;
     top: 0;
   }
 
@@ -53,7 +51,7 @@ body {
     font-weight: bold;
     text-decoration: none;
     text-transform: uppercase;
-    font-size: 2em;
+    font-size: 1.4em;
     font-stretch: wider; 
 }
 
@@ -61,14 +59,14 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 10px;
-    line-height: 1.8;
+    padding-top: .1px;
+    line-height: 1.;
 }
   
 .logo1 { /* Location of logo */
     font-size: 1.0rem;
     padding-left: 12px;
-    padding-top: 14px;
+    padding-top: 15px;
 }
   
 .hamburger { /*Moves the icon*/
@@ -86,11 +84,10 @@ body {
 } 
  
 .navbar { /*Color and location of navigation bar */
-    position: fixed;
+    position: absolute;
     z-index: 1;
     width: 100%;
-    top: 8rem;
-    padding: 20px;
+    top: 1rem;
     background-color:rgba(10, 10, 10, 0.6);
     flex-flow: wrap;
 }
@@ -111,7 +108,7 @@ body {
     background-color: white;
     border: 1.5px solid #f2f5f7;
     border-radius: 2em;
-    padding: 1rem 1rem;
+    padding: .8rem .8rem;
     margin-left: .5vw;
     font-size: 1em;
     cursor: pointer;
@@ -134,9 +131,11 @@ body {
 /* Image - Carousel Information*/
 .slideshow-container { /* Size of images */
     max-width: 70%;
-    max-height: 60%;
     position: relative;
     margin: auto;
+    border: 5px solid  white;
+    margin-bottom: 7em;
+    
 }
    
 .mySlides {/* Hide the images by default */
@@ -203,16 +202,12 @@ body {
 }
 
 /* Text block with information and hours */
-.welcome-container {
-    position: fixed;
-}
-  
 .welcome-block {
     position: fixed;
     text-align: center;
     width: 320px;
     height: auto;
-    top: 18%;
+    top: 20%;
     right: 10%;
     background-color: rgb(35, 190, 178);
     color: white;
@@ -223,7 +218,7 @@ body {
 
 /* Footer */
 .footer { /* Social media bar at bottom of screen - responsive to size */
-  padding: 15px 0;
+  padding: 10px 0;
   background-color: rgba(0,0,0,0.8);
   width: 100%;
   position: fixed;
@@ -287,14 +282,18 @@ body {
 
 .footer .copyright { /* Copyright information*/
     margin-top: 15px;
+    margin-bottom: 2px;
     text-align: center;
     font-size: 14px;
     opacity: .8;
     color: white;
 }
 
+.spaceJam{
+    margin-bottom: 5em;
+}
 /* Media Resize */
-@media screen and (min-width: 1400px) { /* When screen is shrunken down, the following will happen...*/
+@media screen and (min-width: 1200px) { /* When screen is shrunken down, the following will happen...*/
     .navbar {
       display: block;
       position: static;
@@ -306,13 +305,18 @@ body {
   
     .navbar a {
       display: inline-block;
-      padding: 15px 20px;
+      padding: 20px 20px;
     }
   
     .hamburger {
       display: none;
     }
-    .logo1 {
-      height: auto;
+}
+@media screen and (max-width: 800px) {
+    .welcome-block{
+        display: none !important;
+    }
+    .dot {
+        display: none !important;
     }
 } 

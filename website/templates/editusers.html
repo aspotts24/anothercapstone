@@ -1,96 +1,479 @@
 {% extends "base.html" %} {% block title %}Cart{% endblock %}
 {% block cart %}{{rows}}{% endblock %}
-
 {% block content%}
-<br/><br/>
+<style>
+  /* Source https://codepen.io/Tbgse/pen/JXrJGX because I lack the skills */
+  * {
+    font-family: Montserrat;
+  }
+
+  body,
+  html {
+    margin: 0;
+    height: auto;
+    border-radius: 12px 12px 12px 12px;
+  }
+
+  input {
+    border: none;
+  }
+
+  button:focus {
+    outline: none;
+  }
+
+  ::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  ::-webkit-input-placeholder .input-line:focus+::input-placeholder {
+    color: #fff;
+  }
+
+  .highlight {
+    color: rgba(0, 0, 0, 0.8);
+    font-weight: 400;
+    cursor: pointer;
+    transition: color .2s ease;
+    text-decoration: underline;
+  }
+
+  .highlight:hover {
+    color: rgba(35, 190, 178, .9);
+    font-weight: bold;
+    transition: color .2s ease;
+  }
+
+  .spacing {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    height: 120px;
+    font-weight: 300;
+    text-align: center;
+    margin-top: 10px;
+    color: rgba(0, 0, 0, 0.85)
+  }
+
+  a:link {
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+  a:visited {
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+  a:hover {
+    color: rgba(35, 190, 178, .9);
+  }
+
+  .input-line:focus {
+    outline: none;
+    border-color: #fff;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  .ghost-round {
+    cursor: pointer;
+    background: none;
+    border: 1px solid rgba(35, 190, 178, .6);
+    background-color: rgba(35, 190, 178, .6);
+    border-radius: 25px;
+    color: rgba(255, 255, 255, 1);
+    -webkit-align-self: flex-end;
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+    font-size: 19px;
+    font-size: 1.2rem;
+    font-family: Montserrat;
+    font-weight: 300;
+    line-height: 2.5em;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  .ghost-round:hover {
+    background: rgba(35, 190, 178, .9);
+    color: #fff;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  .btn {
+    cursor: pointer;
+    border: 1px solid rgba(35, 190, 178, .6);
+    background-color: rgba(35, 190, 178, .6);
+    border-radius: 25px;
+    color: rgba(255, 255, 255, 1);
+    -webkit-align-self: flex-end;
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+    font-size: 19px;
+    font-size: 1.2rem;
+    font-family: Montserrat;
+    font-weight: 300;
+    line-height: 1em;
+    margin-top: 120px;
+    margin-bottom: 25px;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+    margin: 0 auto;
+  }
+
+  .btn:hover {
+    background: rgba(35, 190, 178, .9);
+    border: rgba(35, 190, 178, .9);
+    color: #fff;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  .input-line {
+    background: none;
+    margin-bottom: 10px;
+    line-height: 2.4em;
+    color: rgba(253, 253, 253, 0.65);
+    font-family: Montserrat;
+    font-weight: 300;
+    letter-spacing: 0px;
+    letter-spacing: 0.02rem;
+    font-size: 19px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.65);
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+  }
+
+  /* Color of dropdown links */
+  .input-line option {
+    color: black;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .input-fields {
+    margin-top: 25px;
+    font-size: 20px;
+  }
+
+  .container {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 100%;
+    margin-top: 1em;
+  }
+
+  .content {
+    padding-left: 25px;
+    padding-right: 25px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: column;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    z-index: 5;
+    border-radius: 25px;
+  }
+
+  .welcome {
+    font-weight: 300;
+    margin-top: 40px;
+    text-align: center;
+    font-size: 40px;
+    font-size: 2.5rem;
+    letter-spacing: 0px;
+    letter-spacing: 0.05rem;
+    font-weight: bold;
+    border: 2px solid white;
+    box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, .8);
+  }
+
+  .subtitle {
+    text-align: center;
+    line-height: 1.3em;
+    font-weight: 100;
+    letter-spacing: 0px;
+    letter-spacing: 0.02rem;
+    font-size: 25px;
+    text-decoration: underline;
+  }
+
+  .menu {
+    background: rgba(0, 0, 0, 0.2);
+    width: 100%;
+    height: 50px;
+  }
+
+  .window {
+    z-index: 100;
+    color: #fff;
+    font-family: Montserrat;
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: column;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    box-shadow: 0px 15px 50px 10px rgba(0, 0, 0, 1);
+    box-sizing: border-box;
+    top: 2em;
+    height: 1100px;
+    width: 1000px;
+    background: #fff;
+    box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, .8);
+    border-radius: 12px 12px 12px 12px;
+  }
+
+  .overlay {
+    background: -webkit-linear-gradient(#ffffff, #000000);
+    background: linear-gradient(#000000, #797978);
+    opacity: 0.85;
+    filter: alpha(opacity=85);
+    height: 1100px;
+    position: absolute;
+    width: 1000px;
+    z-index: 1;
+    border-radius: 12px 12px 12px 12px;
+  }
+
+  .container1 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 80%;
+    padding-top: 4em;
+    padding-bottom: 16em;
+    width: 900px auto
+  }
+
+  .window1 {
+    z-index: 0;
+    color: #fff;
+    font-family: Montserrat;
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: column;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    box-shadow: 0px 15px 50px 10px rgba(0, 0, 0, 1);
+    box-sizing: border-box;
+    height: 800px auto;
+    width: 1000px;
+    background: #fff;
+    box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, .8);
+    border-radius: 12px 12px 12px 12px;
+  }
+
+
+  .content1 {
+    padding-left: 25px;
+    padding-right: 25px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: column;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    z-index: 5;
+    border-radius: 25px;
+  }
+
+  .welcome1 {
+    font-weight: 300;
+    margin-top: 40px;
+    text-align: center;
+    font-size: 40px;
+    font-size: 2.5rem;
+    letter-spacing: 0px;
+    letter-spacing: 0.05rem;
+    font-weight: bold;
+    border: 2px solid white;
+    box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, .8);
+  }
+
+  .bold-line {
+    background: #e7e7e7;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    margin: auto;
+    width: 100%;
+    height: 360px;
+    z-index: 1;
+    opacity: 0.1;
+    background-size: cover;
+  }
+
+  .spaceJams {
+    margin: 5px;
+  }
+
+  .col-md-4 {
+    padding-top: 1.5em;
+  }
+
+  .card-body {
+    font-size: 1em;
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+    text-decoration: underline;
+    box-shadow: 0px 0px 5px 2px rgba(35, 190, 178, .9);
+  }
+
+  .card-title {
+    color: black;
+  }
+
+  .card-text1 {
+    color: black !important;
+    font-size: .4em;
+  }
+
+  @media (max-width: 1070px) {
+    .window {
+      top: -2em;
+      width: 100%;
+      height: 100% auto;
+    }
+
+    .overlay {
+      width: 100%;
+      height: 100% auto;
+    }
+
+    .container {
+      margin-top: 2em;
+      height: auto;
+    }
+
+    .container1 {
+      height: 430px auto;
+    }
+
+    .headerIMG {
+      width: 100% auto;
+    }
+
+    .window1 {
+      top: 10em;
+      width: 100%;
+      height: 100% auto;
+    }
+  }
+</style>
+
+<br /><br />
 <form method="POST">
-    <h3 align="center">Register New Location</h3>
-    <div class="form-group">
-      <label for="email">Email Address</label>
-      <input
-        type="email"
-        class="form-control"
-        id="email"
-        name="email"
-        placeholder="Enter email"
-      />
-    </div>
-    <div class="form-group">
-      <label for="address">Store address</label>
-      <input
-        type="address"
-        class="form-control"
-        id="address"
-        name="address"
-        placeholder="Enter address"
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="open">Order types allowed</label>
-      <select name="open" class="form-control" id="open">
-        <option value="1">Pick-up</option>
-        <option value="2">Delivery</option>
-        <option value="3">Pick-up and Delivery</option>
-        <option value="4">In person only</option>
-        <option value="5">All of above</option>
-        <option value="6">Closed</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-        <label for="phone">Phone number</label>
-        <input
-          type="text"
-          class="form-control"
-          id="phone"
-          name="phone"
-          placeholder="Enter phone number"
-        />
-      </div>
-    
-    <div class="form-group">
-      <label for="password1">Password</label>
-      <input
-        type="password"
-        class="form-control"
-        id="password1"
-        name="password1"
-        placeholder="Enter password"
-      />
-    </div>
-    <div class="form-group">
-      <label for="password2">Password (Confirm)</label>
-      <input
-        type="password"
-        class="form-control"
-        id="password2"
-        name="password2"
-        placeholder="Confirm password"
-      />
-    </div>
-
-    <br />
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-  <br /><br />
-
-  <!-- add for loop to get users and display user information -->
-  <h3>Remove Store Account</h3>
-  <br/>
-  <div class="row gx-4 gx-lg-5">
-    {% for i in account %}
-    <div class="col-md-4 mb-5">
-        <div class="card h-100">
-            <div class="card-body">
-                <h2 class="card-title">{{i.first_name}}</h2>
-                <p class="card-text">{{i.email}} </p>
-                <p class="card-text">{{i.phone}}</p>
-            </div>
-            <div class="card-footer"><a class="btn btn-primary btn-sm" href="{{ url_for ('admin.remove_user', id=i.id) }}">remove location</a></div>
+  <div class='container'>
+    <div class='window'>
+      <div class='overlay'></div>
+      <div class='content'>
+        <div class='welcome'><img src="../static/pictures/newlocation.png" width="100%" height="100%"
+            alt="Register New Location"></div>
+        <div class="input-fields">
+          <label for="email">Email Address:</label>
+          <input type="email" class="input-line full-width" id="email" name="email" placeholder="Enter email:" />
         </div>
+        <div class="input-fields">
+          <label for="address">Store address:</label>
+          <input type="address" class="input-line full-width" id="address" name="address" placeholder="Enter address" />
+        </div>
+
+        <div class="input-fields">
+          <label for="open">Order types allowed:</label>
+          <select name="open" class="input-line full-width" id="open">
+            <option value="1">Pick-up</option>
+            <option value="2">Delivery</option>
+            <option value="3">Pick-up and Delivery</option>
+            <option value="4">In person only</option>
+            <option value="5">All of above</option>
+            <option value="6">Closed</option>
+          </select>
+        </div>
+
+        <div class="input-fields">
+          <label for="phone">Phone number:</label>
+          <input type="text" class="input-line full-width" id="phone" name="phone" placeholder="Enter phone number" />
+        </div>
+
+        <div class="input-fields">
+          <label for="password1">Password:</label>
+          <input type="password" class="input-line full-width" id="password1" name="password1"
+            placeholder="Enter password" />
+        </div>
+        <div class="input-fields">
+          <label for="password2">Confirm password:</label>
+          <input type="password" class="input-line full-width" id="password2" name="password2"
+            placeholder="Confirm password" />
+        </div>
+
+        <br />
+        <button type="submit" class='ghost-round full-width'>Submit</button>
+</form>
+<br /><br />
+
+<!-- add for loop to get users and display user information -->
+<div class='container1'>
+  <div class='window1'>
+    <div class='content1'>
+      <div class='welcome'><img src="../static/pictures/removestore.png" width="100%" height="100%"
+          alt="Remove store location"></div>
+      <br />
+      <div class="row">
+        {% for i in account %}
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h2 class="card-title">
+                <center>{{i.first_name}}</center>
+              </h2>
+              <p class="card-text">
+                <center>{{i.email}} </center>
+              </p>
+              <p class="card-text">
+                <center>{{i.phone}}</center>
+              </p>
+            </div>
+            <div class="card-footer"><a class="btn btn-primary btn-sm"
+                href="{{ url_for ('admin.remove_user', id=i.id) }}">remove location</a></div>
+          </div>
+        </div>
+
+        {% endfor %}
+      </div>
     </div>
-    {% endfor %}
-  </div>
-  <br/><br/>
-  {% endblock %}
+    <br /><br />
+    {% endblock %}

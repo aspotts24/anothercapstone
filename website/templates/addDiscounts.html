@@ -1,14 +1,19 @@
 {% extends "base.html" %} {% block title %}Add Discounts{% endblock %} {% block
 content %}
+
+
 <div class="album py-5 bg-light">
     <link rel="stylesheet" href="../static/discounts.css">
-    <h1 align="center">Add Discounts to the store</h1>
+    <div class='welcome'><img src="../static/pictures/discount.png" width="90%" height="90%" alt="Add Discounts"></div>
+    <br>
+    <div class='subtitle'>Add Discounts to the store</div>
     <div class="container">
         <form method="POST">
             <label>Enter discount <input type="number" name="discountt">%</label>
-            <input id="num" type="submit" value="Create">
+            <br>
+            <input id="num" class="btn2" type="submit" value="Create">
         </form>
-        
+
         <div class="row">
             {% for i in discount %}
             <div class="card">
@@ -17,11 +22,11 @@ content %}
                 </div>
                 <div class="card-footer"><a id="removeD" class="btn btn-primary btn-sm"
                         href="{{ url_for ('store.remove_discount', id=i.id) }}">Remove Discount</a></div>
-
             </div>
             {% endfor %}
-
+            <div class="spaceJam"></div>
         </div>
     </div>
 </div>
+
 {% endblock %}
