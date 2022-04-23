@@ -101,6 +101,7 @@ body {
 .navbar a:hover { /*Links change color when hovered over*/
     color:rgba(253,189,57,1);
     text-decoration: underline;
+    font-size: 2em;
 }
 
  /*Styling Button in Nav Bar*/
@@ -165,25 +166,7 @@ body {
 .prev:hover, .next:hover { /* On hover, add a black background color with a little bit see-through */
     background-color: rgba(253,189,57,1);
 }
-  
-
-.dot { /*Dots for location on carousel*/
-     z-index: 10;
-    cursor: pointer;
-    height: 20px;
-    width: 20px;
-    margin: 2 3px;
-    margin-bottom: 10px;
-    background-color: rgba(253,189,57,1);
-    border-radius: 50%;
-    display: inline-table;
-    transition: background-color 0.6s ease;
-}
-  
-.active, .dot:hover {
-    background-color: white;
-}
-      
+     
 .fade { /* Fading animation */
     -webkit-animation-name: fade;
     -webkit-animation-duration: 1.5s;

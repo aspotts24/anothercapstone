@@ -21,12 +21,11 @@
 
 .card{
     /*add shadows to create the "card" effect*/
-
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
     width: 250px;
     background-color: lightgrey;
-    margin: .30rem;
+    margin: .75rem;
     text-align: center;
 }
 
@@ -62,7 +61,7 @@ input[type=number]::-webkit-outer-spin-button{
     flex-flow: column;
     box-shadow: 0px 15px 50px 10px rgba(0, 0, 0, 1);
     box-sizing: border-box;
-    height: auto;
+    height: 700px auto;
     width: 100%;
     background: #fff;
     box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, .8);
