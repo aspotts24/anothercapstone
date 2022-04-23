@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" style="padding: 0px;height:100%;width: 100%;">
-
 <head>
   <meta charset="UTF-8" />
   <!-- Displays site correctly for all devices.-->
@@ -32,17 +31,10 @@
   <style>
     #navigationID {
       background-color: black !important;
-      margin-top: 10px;
       font-size: 20px;
       z-index: 1000;
     }
   </style>
-
-  <!-- Contact Bar at top of screen -->
-  <section class="contact-bar">
-    <div class="bar">
-    </div>
-  </section>
 
   <!-- Cart -->
   <div class="cart" id="cartRight" style="display: none;">
@@ -120,6 +112,7 @@
             aria-haspopup="true" aria-expanded="false">
             Sign in/up</a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" id="home" href="/">Home</a>
             <a class="dropdown-item" id="login" href="/login">Login</a>
             <a class="dropdown-item" id="signUp" href="/sign-up">Sign Up</a>
             <a class="dropdown-item" id="employeeLogin" href="/employee-login">Employee login</a>
@@ -168,6 +161,17 @@
     <a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
     <a href="https://www.facebook.com"><i class="fab fa-facebook-f"></i></a>
   </div>
+    <ul class="list">
+      <li>
+        <a href="/">Home</a>
+      </li>
+      <li>
+        <a href="/start-order">Menu</a>
+      </li>
+      <li>
+        <a href="/login">Order Online</a>
+      </li>
+    </ul>
   <!-- Copyright year updates to whatever year it is -->
   <p class="copyright">
     Copyright &copy; Pizza Night

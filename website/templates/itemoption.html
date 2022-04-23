@@ -80,8 +80,8 @@
   .ghost-round {
     cursor: pointer;
     background: none;
-    border: 1px solid rgba(35, 190, 178, .6);
-    background-color: rgba(35, 190, 178, .6);
+    border: 1px solid rgba(35, 190, 178, .8);
+    background-color: rgba(35, 190, 178, .8);
     border-radius: 25px;
     color: rgba(255, 255, 255, 1);
     -webkit-align-self: flex-end;
@@ -99,7 +99,8 @@
   }
 
   .ghost-round:hover {
-    background: rgba(35, 190, 178, .9);
+    background: rgba(253,189,57, 1);
+    border: rgba(253,189,57, 1);
     color: #fff;
     -webkit-transition: all .2s ease;
     transition: all .2s ease;
@@ -110,7 +111,7 @@
     border: 1px solid rgba(35, 190, 178, .6);
     background-color: rgba(35, 190, 178, .6);
     border-radius: 25px;
-    color: rgba(255, 255, 255, 1);
+    color: white !;
     -webkit-align-self: flex-end;
     -ms-flex-item-align: end;
     align-self: flex-end;
@@ -127,8 +128,8 @@
   }
 
   .btn:hover {
-    background: rgba(35, 190, 178, .9);
-    border: rgba(35, 190, 178, .9);
+    background: rgba(253,189,57, 1);
+    border: rgba(253,189,57, 1);
     color: #fff;
     -webkit-transition: all .2s ease;
     transition: all .2s ease;
@@ -369,6 +370,9 @@
     background-size: cover;
   }
 
+  .card {
+    border-radius: 12px 12px 12px 12px;
+  }
 
   .card-body {
     font-size: 1em;
@@ -377,8 +381,18 @@
     text-decoration: underline;
     box-shadow: 0px 0px 5px 2px rgba(35, 190, 178, .9);
     padding-bottom: .5em;
+    border-radius: 12px 12px 0px 0px;
   }
 
+  .card-footer {
+    font-size: 1em;
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+    text-decoration: underline;
+    box-shadow: 0px 0px 5px 2px rgba(35, 190, 178, .9);
+    padding-bottom: .5em;
+    border-radius: 0px 0px 12px 12px;
+  }
   .card-title {
     color: black;
   }
@@ -430,7 +444,7 @@
     <div class='window'>
       <div class='overlay'></div>
       <div class='content'>
-        <div class='welcome'><img src="../static/pictures/addmenuoptions.png" width="100%" height="100%"
+        <div class='welcome'><img src="../static/pictures/addmenuoptions.png" width="100%" height="100px"
             alt="Add Menu Option"></div>
         <div class="input-fields">
           <label for="name">Option item</label>
@@ -464,7 +478,7 @@
 <div class='container1'></div>
 <div class="window1">
   <div class="content1">
-    <div class='welcome'><img src="../static/pictures/removeoption.png" width="100%" height="100%" alt="Remove option">
+    <div class='welcome'><img src="../static/pictures/removeoption.png" width="100%" height="100px" alt="Remove option">
     </div>
     <br />
     <div class="row">

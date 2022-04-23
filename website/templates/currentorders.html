@@ -36,7 +36,7 @@
     box-shadow: 0px 15px 50px 10px rgba(0, 0, 0, 1);
     box-sizing: border-box;
     height: auto;
-    width: 100%;
+    width: 1000px;
     background: #fff;
     box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, .8);
     border-radius: 12px 12px 12px 12px;
@@ -67,19 +67,19 @@
 
   .subtitle {
     text-align: center;
-    line-height: 1em;
+    line-height: .70em;
     font-weight: bolder;
     letter-spacing: 0px;
     letter-spacing: 0.02rem;
     font-size: 40px;
-    color: #000;
+    color: rgba(0, 0, 0, 0.7);
     text-decoration: underline;
   }
 
   .btn {
     cursor: pointer;
-    border: 1px solid rgba(35, 190, 178, .6);
-    background-color: rgba(35, 190, 178, .6);
+    border: 1px solid rgba(35, 190, 178, .8);
+    background-color: rgba(35, 190, 178, .8);
     border-radius: 25px;
     color: rgba(255, 255, 255, 1);
     -webkit-align-self: flex-end;
@@ -100,8 +100,8 @@
   }
 
   .btn:hover {
-    background: rgba(35, 190, 178, .9);
-    border: rgba(35, 190, 178, .9);
+    background: rgba(253,189,57, 1);
+    border: rgba(253,189,57, 1);
     color: #fff;
     -webkit-transition: all .2s ease;
     transition: all .2s ease;
@@ -114,6 +114,7 @@
     text-decoration: underline;
     box-shadow: 0px 0px 5px 2px rgba(35, 190, 178, .9);
     height: auto;
+    border-radius: 12px 12px 12px 12px;
   }
 
   .card-title {
@@ -129,8 +130,9 @@
     margin: 7em;
   }
 </style>
+
 <div class="album py-5 bg-light">
-  <div class='welcome'><img src="../static/pictures/Current Orders.png" width="90%" height="90%" alt="Current Orders">
+  <div class='welcome'><img src="../static/pictures/Current Orders.png" width="90%" height="120px" alt="Current Orders">
   </div>
   <div class="container">
     <div class='window'>
@@ -141,7 +143,7 @@
       (order['store_id'] == user.store_id and user.__class__.__name__ == 'Employee') or
       (user.__class__.__name__ == 'User' and user.id == 1) %}
       <!-- Hover over the customer's name to see the session id attached to their order -->
-      <div class="subtitle" title="SESSION ID: {{person}}">{{order['customer_name']}}<div>
+      <div class="subtitle" title="SESSION ID: {{person}}">{{order['customer_name']}}'s Order<div>
           <br>
           <form method="POST">
             <h3>

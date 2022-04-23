@@ -4,7 +4,7 @@ content %}
 
 <div class="album py-5 bg-light">
     <link rel="stylesheet" href="../static/discounts.css">
-    <div class='welcome'><img src="../static/pictures/discount.png" width="90%" height="90%" alt="Add Discounts"></div>
+    <div class='welcome'><img src="../static/pictures/discount.png" width="80%" height="100px" alt="Add Discounts"></div>
     <br>
     <div class='subtitle'>Add Discounts to the store</div>
     <div class="container">
@@ -22,11 +22,11 @@ content %}
                 </div>
                 <div class="card-footer"><a id="removeD" class="btn btn-primary btn-sm"
                         href="{{ url_for ('store.remove_discount', id=i.id) }}">Remove Discount</a></div>
-            </div>
+                    </div>
             {% endfor %}
-            <div class="spaceJam"></div>
         </div>
     </div>
+    <div class="spaceJam"></div>
 </div>
 
 {% endblock %}

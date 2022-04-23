@@ -61,7 +61,7 @@
     box-shadow: 0px 15px 50px 10px rgba(0, 0, 0, 1);
     box-sizing: border-box;
     height: auto;
-    width: 100%;
+    width: 1000px;
     background: #fff;
     box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, .8);
     border-radius: 12px 12px 12px 12px;
@@ -71,16 +71,15 @@
   .img1 {
     border: 3px solid rgba(35, 190, 178, 1);
     box-shadow: 0px 0px 5px 2px rgba(35, 190, 178, 1);
-    max-width: 100%;
+    width: 85%;
     max-height: 100%;
-
   }
 
   .btn {
     cursor: pointer;
     background: none;
-    border: 1px solid rgba(35, 190, 178, .6);
-    background-color: rgba(35, 190, 178, .6);
+    border: 1px solid rgba(35, 190, 178, .8);
+    background-color: rgba(35, 190, 178, .8);
     border-radius: 25px;
     color: rgba(255, 255, 255, 1);
     -webkit-align-self: flex-end;
@@ -95,20 +94,20 @@
     margin-bottom: 10px;
     -webkit-transition: all .2s ease;
     transition: all .2s ease;
-    width: 150px;
+    width: 100px;
   }
 
   .btn:hover {
-    background: rgba(35, 190, 178, .9);
-    border: rgba(35, 190, 178, .9);
+    background: rgba(253,189,57, 1);
+    border: rgba(253,189,57, 1);
     color: #fff;
     -webkit-transition: all .2s ease;
     transition: all .2s ease;
   }
 
   .container {
-    padding: 2em;
-    padding-top: 1.5em;
+    padding: 1em;
+    padding-top: 1em;
   }
 
   .bd-placeholder-img {
@@ -140,7 +139,6 @@
 
   .card-text {
     color: black !important;
-    font-size: 2em;
   }
 
   .spaceJam {
@@ -174,11 +172,13 @@
     }
   }
 </style>
+
 <div class="album py-5 bg-light">
-  <div class='welcome'><img src="../static/pictures/menu.png" width="90%" height="90%" alt="Current Orders"></div>
+  <div class='welcome'><img src="../static/pictures/menu.png" width="85%" height="100px" alt="Current Orders"></div>
   <div class="container">
     <div class='window'>
       <div class="container"></div>
+      <div class="row" style="border-top: 2px solid rgba(0,0,0,.1); padding: 1vh 0;"></div>
       <div class="subtitle"> Pizza </div><br>
       <div class="row" style="border-top: 2px solid rgba(0,0,0,.1); padding: 2vh 0;"></div>
       <div class="row">
@@ -187,12 +187,12 @@
       <div class="col-md-4">
         <div class="card mb-4 shadow-sm">
           <svg class="bd-placeholder-img card-img-top" width="100%" height="225">
-            <image width="100%" height="405" class="eq__NEcontainer__currentAlarmAction"
+            <image width="100%" height="100%" class="eq__NEcontainer__currentAlarmAction"
               xlink:href="../static/pictures/{{item.img}}"></image>
             <rect width="100%" height="405" class="eq__NEcontainer__currentAlarmAction" style="fill:url(#godhelpme);">
           </svg>
           <div class="card-body">
-            <p class="card-text">
+            <p class="card-text" style="size: 2em">
               <center>{{ item.name }}<center>
             </p>
             <div class="d-flex justify-content-between align-items-center">
@@ -208,15 +208,16 @@
       {%endif%}
       {% endfor %}
     </div>
-    <div class="row" style="border-top: 2px solid rgba(0,0,0,.1); padding: 2vh 0;"></div>
+    <div class="row" style="border-top: 2px solid rgba(0,0,0,.1); padding: 1vh 0;"></div>
     <div class="subtitle"> Sides </div><br>
+    <div class="row" style="border-top: 2px solid rgba(0,0,0,.1); padding: 2vh 0;"></div>
     <div class="row">
       {% for item in items %}
       {%if item.category == 2%}
       <div class="col-md-4">
         <div class="card mb-4 shadow-sm">
           <svg class="bd-placeholder-img card-img-top" width="100%" height="225">
-            <image width="100%" height="405" class="eq__NEcontainer__currentAlarmAction"
+            <image width="100%" height="100%" class="eq__NEcontainer__currentAlarmAction" id="img1"
               xlink:href="../static/pictures/{{item.img}}"></image>
             <rect width="100%" height="405" class="eq__NEcontainer__currentAlarmAction" style="fill:url(#godhelpme);">
           </svg>
@@ -235,15 +236,16 @@
       {%endif%}
       {% endfor %}
     </div>
-    <div class="row" style="border-top: 2px solid rgba(0,0,0,.1); padding: 2vh 0;"></div>
+    <div class="row" style="border-top: 2px solid rgba(0,0,0,.1); padding: 1vh 0;"></div>
     <div class="subtitle"> Desserts </div><br>
+    <div class="row" style="border-top: 2px solid rgba(0,0,0,.1); padding: 2vh 0;"></div>
     <div class="row">
       {% for item in items %}
       {%if item.category == 3%}
       <div class="col-md-4">
         <div class="card mb-4 shadow-sm">
           <svg class="bd-placeholder-img card-img-top" width="100%" height="225">
-            <image width="100%" height="405" class="eq__NEcontainer__currentAlarmAction"
+            <image width="100%" height="100%" class="eq__NEcontainer__currentAlarmAction"
               xlink:href="../static/pictures/{{item.img}}"></image>
             <rect width="100%" height="405" class="eq__NEcontainer__currentAlarmAction" style="fill:url(#godhelpme);">
           </svg>
@@ -262,15 +264,16 @@
       {%endif%}
       {% endfor %}
     </div>
-    <div class="row" style="border-top: 2px solid rgba(0,0,0,.1); padding: 2vh 0;"></div>
+    <div class="row" style="border-top: 2px solid rgba(0,0,0,.1); padding: 1vh 0;"></div>
     <div class="subtitle"> Drinks </div><br>
+    <div class="row" style="border-top: 2px solid rgba(0,0,0,.1); padding: 2vh 0;"></div>
     <div class="row">
       {% for item in items %}
       {%if item.category == 4%}
       <div class="col-md-4">
         <div class="card mb-4 shadow-sm">
           <svg class="bd-placeholder-img card-img-top" width="100%" height="225">
-            <image width="100%" height="405" class="eq__NEcontainer__currentAlarmAction"
+            <image width="100%" height="100%" class="eq__NEcontainer__currentAlarmAction"
               xlink:href="../static/pictures/{{item.img}}"></image>
             <rect width="100%" height="405" class="eq__NEcontainer__currentAlarmAction" style="fill:url(#godhelpme);">
           </svg>

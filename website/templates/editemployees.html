@@ -77,8 +77,8 @@ content %}
   .ghost-round {
     cursor: pointer;
     background: none;
-    border: 1px solid rgba(35, 190, 178, .6);
-    background-color: rgba(35, 190, 178, .6);
+    border: 1px solid rgba(35, 190, 178, .8);
+    background-color: rgba(35, 190, 178, .8);
     border-radius: 25px;
     color: rgba(255, 255, 255, 1);
     -webkit-align-self: flex-end;
@@ -96,7 +96,8 @@ content %}
   }
 
   .ghost-round:hover {
-    background: rgba(35, 190, 178, .9);
+    background: rgba(253,189,57, 1);
+    border: rgba(253,189,57, 1);
     color: #fff;
     -webkit-transition: all .2s ease;
     transition: all .2s ease;
@@ -104,10 +105,10 @@ content %}
 
   .btn {
     cursor: pointer;
-    border: 1px solid rgba(35, 190, 178, .6);
-    background-color: rgba(35, 190, 178, .6);
+    border: 1px solid rgba(35, 190, 178, .8);
+    background-color: rgba(35, 190, 178, .8);
     border-radius: 25px;
-    color: rgba(255, 255, 255, 1);
+    color: rgba(255, 255, 255, 1) !important;
     -webkit-align-self: flex-end;
     -ms-flex-item-align: end;
     align-self: flex-end;
@@ -124,8 +125,8 @@ content %}
   }
 
   .btn:hover {
-    background: rgba(35, 190, 178, .9);
-    border: rgba(35, 190, 178, .9);
+    background: rgba(253,189,57, 1);
+    border: rgba(253,189,57, 1);
     color: #fff;
     -webkit-transition: all .2s ease;
     transition: all .2s ease;
@@ -264,7 +265,7 @@ content %}
     -ms-flex-pack: center;
     justify-content: center;
     height: 80%;
-    padding-top: 1em;
+    padding-top: 3em;
     padding-bottom: 16em;
   }
 
@@ -334,12 +335,28 @@ content %}
     margin: 2em;
   }
 
+  .card {
+    border-radius: 12px 12px 12px 12px;
+  }
+
   .card-body {
-    font-size: .8em;
+    font-size: 1em;
     color: rgba(0, 0, 0, 0.7);
     font-weight: bold;
     text-decoration: underline;
     box-shadow: 0px 0px 5px 2px rgba(35, 190, 178, .9);
+    padding-bottom: .5em;
+    border-radius: 12px 12px 0px 0px;
+  }
+
+  .card-footer {
+    font-size: 1em;
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+    text-decoration: underline;
+    box-shadow: 0px 0px 5px 2px rgba(35, 190, 178, .9);
+    padding-bottom: .5em;
+    border-radius: 0px 0px 12px 12px;
   }
 
   .card-title {
@@ -388,7 +405,7 @@ content %}
     <div class='window'>
       <div class='overlay'></div>
       <div class='content'>
-        <div class='welcome'><img src="../static/pictures/newemployees.png" width="100%" height="100%"
+        <div class='welcome'><img src="../static/pictures/newemployees.png" width="100%" height="100px"
             alt="Add an employee"></div>
         <br>
         <div class='subtitle'>Add Employee to {{user.address}}</div>
@@ -425,7 +442,7 @@ content %}
         <div class='container1'>
           <div class='window1'>
             <div class='content1'>
-              <div class='welcome'><img src="../static/pictures/removeemployee.png" width="100%" height="100%"
+              <div class='welcome'><img src="../static/pictures/removeemployee.png" width="100%" height="100px"
                   alt="Remove employee"></div>
               <br />
 

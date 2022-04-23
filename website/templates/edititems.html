@@ -107,8 +107,8 @@
 
   .btn {
     cursor: pointer;
-    border: 1px solid rgba(35, 190, 178, .6);
-    background-color: rgba(35, 190, 178, .6);
+    border: 1px solid rgba(35, 190, 178, .8);
+    background-color: rgba(35, 190, 178, .8);
     border-radius: 25px;
     color: rgba(255, 255, 255, 1);
     -webkit-align-self: flex-end;
@@ -127,8 +127,8 @@
   }
 
   .btn:hover {
-    background: rgba(35, 190, 178, .9);
-    border: rgba(35, 190, 178, .9);
+    background: rgba(253,189,57, 1);
+    border: rgba(253,189,57, 1);
     color: #fff;
     -webkit-transition: all .2s ease;
     transition: all .2s ease;
@@ -208,6 +208,7 @@
     height: 100%;
     padding-top: 1em;
     margin-top: 1em;
+    border-radius: 12px 12px 12px 12px;
   }
 
   .content {
@@ -375,6 +376,17 @@
     color: rgba(0, 0, 0, 0.7);
     font-weight: bold;
     text-decoration: underline;
+    border-radius: 0px 0px 12px 12px ;
+    box-shadow: 0px 0px 5px 2px rgba(35, 190, 178, .9);
+  }
+  
+  .card {
+    border-radius: 12px 12px 12px 12px;
+    box-shadow: 0px 0px 5px 2px rgba(35, 190, 178, .9);
+  }
+
+  svg {
+    border-radius: 12px 12px 0px 0px;
     box-shadow: 0px 0px 5px 2px rgba(35, 190, 178, .9);
   }
 
@@ -430,7 +442,7 @@
     <div class='window'>
       <div class='overlay'></div>
       <div class='content'>
-        <div class='welcome'><img src="../static/pictures/EditItems.png" width="100%" height="100%"
+        <div class='welcome'><img src="../static/pictures/EditItems.png" width="100%" height="100px"
             alt="Add Menu Items"></div>
         <div class="input-fields">
           <label for="name">Item Name:</label>
@@ -472,7 +484,7 @@
 <div class='container'></div>
 <div class="window1">
   <div class="content">
-    <div class='welcome'><img src="../static/pictures/currentitems.png" width="100%" height="100%"
+    <div class='welcome'><img src="../static/pictures/currentitems.png" width="100%" height="100px"
         alt="Current Menu Items"></div>
     <div class="container1">
       <div class="row">
@@ -480,9 +492,9 @@
         <div class="col-md-4">
           <div class="card mb-4 shadow-sm">
             <svg class="bd-placeholder-img card-img-top" width="100%" height="225">
-              <image width="100%" height="255" class="eq__NEcontainer__currentAlarmAction"
+              <image width="100%" height="200" class="eq__NEcontainer__currentAlarmAction"
                 xlink:href="../static/pictures/{{item.img}}"></image>
-              <rect width="100%" height="225" class="eq__NEcontainer__currentAlarmAction" style="fill:url(#godhelpme);">
+              <rect width="100%" height="200" class="eq__NEcontainer__currentAlarmAction" style="fill:url(#godhelpme);">
             </svg>
             <div class="card-body">
               <p class="card-text">{{ item.name }}</p>

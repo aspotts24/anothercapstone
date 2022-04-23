@@ -18,7 +18,7 @@
     margin-top: 40px;
     text-align: center;
     font-size: 60px;
-    font-size: 4rem;
+    font-size: 3rem;
     letter-spacing: 0px;
     letter-spacing: 0.05rem;
     font-weight: bold;
@@ -31,7 +31,7 @@
     line-height: 1.3em;
     letter-spacing: 0px;
     letter-spacing: 0.02rem;
-    font-size: 4em;
+    font-size: 3em;
     color: rgba(0, 0, 0, .6);
     font-weight: bold;
   }
@@ -41,7 +41,7 @@
     line-height: 1.3em;
     letter-spacing: 0px;
     letter-spacing: 0.02rem;
-    font-size: 1.4em;
+    font-size: 1em;
     color: rgba(0, 0, 0, .6);
     font-weight: bold;
   }
@@ -78,8 +78,8 @@
   .btn {
     cursor: pointer;
     background: none;
-    border: 1px solid rgba(35, 190, 178, .6);
-    background-color: rgba(35, 190, 178, .6);
+    border: 1px solid rgba(35, 190, 178, .8);
+    background-color: rgba(35, 190, 178, .8);
     border-radius: 25px;
     color: rgba(255, 255, 255, 1);
     -webkit-align-self: flex-end;
@@ -98,17 +98,30 @@
   }
 
   .btn:hover {
-    background: rgba(35, 190, 178, .9);
-    border: rgba(35, 190, 178, .9);
+    background: rgba(253,189,57, 1);
+    border: rgba(253,189,57, 1);
     color: #fff;
     -webkit-transition: all .2s ease;
     transition: all .2s ease;
+  }
+
+  a {
+    color: white;
+  }
+
+  a:hover {
+    color: white;
   }
 
   .container {
     color: rgba(35, 190, 178, .9);
     font-size: 1em;
     padding: 2em;
+  }
+
+  input.sized{
+    transform: scale(1.5);
+    margin: 1em;
   }
 
   .spaceJam {
@@ -125,22 +138,21 @@
       width: 100%;
       height: 90%;
     }
+    
   }
 </style>
 <div class="album py-5 bg-light">
   <div class="subtitle">
     <center>{{ current_item.name }}</center>
   </div><br>
-  <!--<image width="100%" height="405"
-            xlink:href="../static/pictures/{{current_item.img}}"></image>-->
-  <div class="container" style="font-size: 2em;">
+  <div class="container" style="font-size: 1.5em;">
     <p>{{ current_item.desc }}</p>
     <form method="POST" style="font-size: .7em;">
       <div class="subtitle2">Add something extra: </div>
       <p>
         {% for i in options %}
         {% if i.category == current_item.category %}
-        <input type="checkbox" id="options" name="options" value="{{i.name}}|{{i.price}}">
+        <input type="checkbox" id="options" name="options" class ="sized" value="{{i.name}}|{{i.price}}">
         <label for="options">{{ i.name }} + ${{i.price}}</label><br>
         {% endif %}
         {% endfor %}
@@ -164,6 +176,7 @@
 
       {% if current_user.is_authenticated %}
       <button type="submit" class="btn btn-sm btn-outline-secondary">Add to Cart</button>
+      <button type="submit" class="btn btn-sm btn-outline-secondary"><a href="/website-menu">Back</button></a>
       {% endif %}
     </form>
   </div>
