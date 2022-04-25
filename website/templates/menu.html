@@ -171,6 +171,47 @@
       height: 90%;
     }
   }
+
+  
+
+  #discountLabel{
+    /* width: 300px; */
+    height: 60px;
+    text-align: center;
+    background-color: lightgray;
+    box-shadow: 0px 0px 5px 2px rgba(35, 190, 178, .9);
+  }
+
+  #discountLabel, label{
+    text-transform: uppercase;
+    background-image: linear-gradient(
+      -225deg,
+      #231557 0%,
+      #44107a 29%,
+      #ff1361 67%,
+      #fff800 100%
+    );
+    background-size: auto auto;
+    background-clip: border-box;
+    background-size: 200% auto;
+    color: #fff;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textclip 2s linear infinite;
+    /* display: inline-block; */
+    font-size: 20px;
+    /* font-family: 'Times New Roman', Times, serif; */
+    font-weight: bold;
+    
+  }
+  @keyframes textclip {
+    to {
+      background-position: 200% center;
+    }
+  }
+
 </style>
 
 <div class="album py-5 bg-light">
@@ -180,6 +221,13 @@
       <div class="container"></div>
       <div class="row" style="border-top: 2px solid rgba(0,0,0,.1); padding: 1vh 0;"></div>
       <div class="subtitle"> Pizza </div><br>
+      {% for discount in getDis %}
+      
+      <div  id="discountLabel">
+        <label >Use code "{{discount['discount_info']}}%OFF" for orders $15 or more</label>
+    </div>
+      
+      {% endfor %}
       <div class="row" style="border-top: 2px solid rgba(0,0,0,.1); padding: 2vh 0;"></div>
       <div class="row">
       {% for item in items %}

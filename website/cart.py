@@ -29,12 +29,12 @@ def website_cart():
     total = subtotal
   else:
     total += subtotal + float(tip)
+ 
 
-  #This if statement will check if the subtotal of the cart is more than $20 to apply the discount,
+
+  #This if statement will check if the subtotal of the cart is more than $15 to apply the discount,
   # and also to check if the user input is an empty string or a none value.
-  
   if discount == '' or discount == None:
-    total = subtotal
     discountTotal = 0
   elif subtotal >= 15:
     total -= discountTotal
