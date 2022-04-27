@@ -1,5 +1,6 @@
 # blueprint for all menu related functions go in this file the blueprint itslef is named 'menu'
 
+from datetime import datetime
 from unicodedata import category
 from click import option
 from flask import Blueprint, render_template, flash, url_for, redirect, request, session
@@ -7,6 +8,7 @@ from flask_login import current_user
 from . import db
 from .models import Cart, Employee, Item, Option, Store
 from .getters import get_items, getItemsInCart, get_stores, get_employees, get_options, get_discounts
+import random
 
 # blueprint named menu, this needs to be added to __init__
 menu = Blueprint('menu', __name__)
@@ -20,6 +22,7 @@ menu = Blueprint('menu', __name__)
 # 4. rows (which returns the number of items currently in cart)
 @menu.route('/website-menu', methods=['GET', 'POST'])
 def website_menu():
+  
   return render_template('menu.html', user=current_user, items=get_items(), rows = getItemsInCart(), getDis= get_discounts())
 
 

@@ -148,15 +148,27 @@ def remove_order(id):
 
 @store.route('/add-discounts', methods=['GET','POST'])
 def add_discount():
+
+  discountList = get_discounts()
+
   if request.method == 'POST':
     discount = request.form.get('discountt')
-    
 
+    for i in discountList:
+      if i['discount_info'] == int(discount):
+        flash('Discount already created')
+        return redirect(url_for('store.add_discount'))
+  
+  #adding discounts to the database
     if discount == None or discount == '':
-      flash('Error creating discount', category='success')
+      flash('Error creating discount')
       return redirect(url_for('store.add_discount'))
     elif int(discount) > 50:
-      flash('Discount must be less than 50%', category='success')
+      flash('Discount must be less than 50%')
+      return redirect(url_for('store.add_discount'))
+
+    elif len(discountList) > 0:
+      flash('Only one discount can be created.')
       return redirect(url_for('store.add_discount'))
     else:
       # create new discount by passing data into variable called 'new_dicount'
