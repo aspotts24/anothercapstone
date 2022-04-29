@@ -50,7 +50,7 @@
             {% for items in item %}
             <div class="row border-top border-bottom">
                 <div class="row main align-items-center">
-                    <div class="col-2"><img class="img-fluid" src="https://i.imgur.com/1GrakTl.jpg"></div>
+                    <div class="col-2"><img class="img-fluid" src=""></div>
                     <div class="col">
                         <div class="row text-muted" title="OPTIONS: {{items['options']}}">{{ items['name'] }}</div>
                         <p>
@@ -59,9 +59,9 @@
                             {% endfor %}
                         </p>
                     </div>
-                    <div class="col"> <a href="#">-</a><a class="border">{{ items['quantity'] }}</a><a href="#">+</a>
+                    <div class="col"><a class="border">{{ items['quantity'] }}</a>
                     </div>
-                    <div class="col">${{ items['price'] * items['quantity']}}
+                    <div class="col">${{'%0.2f' % (items['price'] * items['quantity'])|float }}
                         <span class="close">
                             <a href="{{ url_for('cart.delete', id=items.id)}}">&#10005;</a>
                         </span>

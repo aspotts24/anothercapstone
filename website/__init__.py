@@ -51,6 +51,9 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(id):
+        if not session.get('cart'):
+            session['cart'] = []
+
         try:
             if session['account-type'] == 'User':
                 return User.query.get(int(id))
