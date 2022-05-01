@@ -1,5 +1,6 @@
 from multiprocessing.sharedctypes import Value
-import re
+import re, stripe
+from click import option
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from .models import Employee, Cart, Order, User, Discount
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -177,6 +178,11 @@ def add_discount():
       db.session.add(new_discount)
       # save database with new_discount passed
       db.session.commit()
+      stripe.Coupon.create(
+        id=f"{discount}OFF",
+        percent_off=int(discount),
+        duration="forever",
+      )
       flash('Discount Created!', category='success')
       return redirect(url_for('store.add_discount'))
 
@@ -186,6 +192,7 @@ def add_discount():
 def remove_discount(id):
   option_to_delete = Discount.query.get_or_404(id)
   try:
+    disc_info = option_to_delete.discount_info
     db.session.delete(option_to_delete)
     db.session.commit()
     
@@ -197,6 +204,8 @@ def remove_discount(id):
       _id.id = new_id
       new_id += 1
       db.session.commit()
+
+    stripe.Coupon.delete(f"{disc_info}OFF")
 
     flash('Discount removed')
     return redirect(url_for('store.add_discount'))

@@ -1,8 +1,9 @@
 
+from dis import dis
 from flask import Blueprint, render_template, flash, url_for, redirect, request, abort, jsonify, session
 from flask_login import current_user
 
-from .models import Cart, Order
+from .models import Cart, Discount, Order
 from . import db
 import stripe
 from .getters import get_cart_items, total_price_items, getItemsInCart, get_discounts
@@ -27,8 +28,10 @@ def website_cart():
   if tip == '' or tip == None:
     tip = 0
     total = subtotal
+    set_tip(0)
   else:
     total += subtotal + float(tip)
+    set_tip(float(tip))
  
 
 
@@ -36,10 +39,10 @@ def website_cart():
   # and also to check if the user input is an empty string or a none value.
   if discount == '' or discount == None:
     discountTotal = 0
+    set_discount(None)
   elif subtotal >= 15:
     total -= discountTotal
-  
-
+    set_discount(discount)
 
   return render_template('cart.html', user=current_user, item=get_cart_items(), rows=getItemsInCart(), total='{:,.2f}'.format(total), subtotal='{:,.2f}'.format(subtotal),
     tip='{:,.2f}'.format(float(tip)), discount = '{:,.2f}'.format(float(discountTotal)))
@@ -64,10 +67,21 @@ def clearcart():
   return redirect(url_for('cart.website_cart'))
 
 
-@cart.route('/create-checkout-session', methods=['POST'])
+@cart.route('/create-checkout-session', methods=['GET', 'POST'])
 def create_checkout_session():
     cart = get_cart_items()
-    cart_items = []
+    global DISCOUNT
+    global TIP
+    cart_items = [{
+      'price_data': {
+        'currency': 'usd',
+        'product_data': {
+          'name': 'Tip',
+        },
+        'unit_amount': int(TIP * 100),
+      },
+      'quantity': 1,
+    }]
     for item in cart:
       cart_items += [{
       'price_data': {
@@ -79,12 +93,28 @@ def create_checkout_session():
       },
       'quantity': item['quantity'],
     }]
-    session = stripe.checkout.Session.create(
-    line_items=cart_items,
-    mode='payment',
-    success_url='http://127.0.0.1:5000/successful?session_id={CHECKOUT_SESSION_ID}',
-    cancel_url='http://127.0.0.1:5000/website-cart',
-  )
+    try:
+      session = stripe.checkout.Session.create(
+      line_items=cart_items,
+      mode='payment',
+      discounts = [{
+        'coupon': DISCOUNT
+      }],
+      success_url='http://127.0.0.1:5000/successful?session_id={CHECKOUT_SESSION_ID}',
+      cancel_url='http://127.0.0.1:5000/website-cart',
+      )
+    except stripe.error.InvalidRequestError:
+      # Sets the discount to None if it does not exist
+      session = stripe.checkout.Session.create(
+      line_items=cart_items,
+      mode='payment',
+      discounts = [{
+        'coupon': None
+      }],
+      success_url='http://127.0.0.1:5000/successful?session_id={CHECKOUT_SESSION_ID}',
+      cancel_url='http://127.0.0.1:5000/website-cart',
+      )
+
     return redirect(session.url, code=303)
 
 def create_order(items, user, session, store_id):
@@ -154,3 +184,14 @@ def discountPrice(total, discounts, getDiscount):
 
 
   return price_discounted
+
+def set_tip(tip):
+  global TIP
+  TIP = tip
+
+def set_discount(discount):
+  global DISCOUNT
+  if discount != None:
+    discount = discount.replace("%", "")
+  DISCOUNT = discount
+  print(DISCOUNT)
